@@ -4,13 +4,19 @@
 
 .data
   cuadradito db 254
+
+  ;Posición a dónde está parado el jugador.
   jugadorX db 0
   jugadorY db 0
+
   cursor db "c"
   filas dw 4
   columnas dw 4
+
+  ;Posición a dónde está el cursor en una iteración de escritura/dibujo.
   cursorX db 0
   cursorY db 0
+
 .code
 main proc
   mov ax, @data
