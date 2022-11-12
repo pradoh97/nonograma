@@ -25,7 +25,7 @@
   u4      db 200,205,205,205,242,242,242,242,242,205,205,205,188,24h
 
 .code
-
+extrn imprimir: proc
 main proc
   mov ax, @data
   mov ds, ax
@@ -53,8 +53,8 @@ main proc
   		int 10h
 
       lea dx, t1
-      mov ah, 9
-      int 21h
+      call imprimir
+
       inc cursorY
 
       mov ah, 2		;POSICIONAMOS EL CURSOR
@@ -64,8 +64,8 @@ main proc
   		int 10h
 
       lea dx, t2
-      mov ah, 9
-      int 21h
+      call imprimir
+
       inc cursorY
 
       mov ah, 2		;POSICIONAMOS EL CURSOR
@@ -75,8 +75,7 @@ main proc
   		int 10h
 
       lea dx, t3
-      mov ah, 9
-      int 21h
+      call imprimir
       inc cursorY
 
       mov ah, 2		;POSICIONAMOS EL CURSOR
@@ -86,8 +85,8 @@ main proc
   		int 10h
 
       lea dx, t4
-      mov ah, 9
-      int 21h
+      call imprimir
+
       inc cursorY
 
       mov ah, 2		;POSICIONAMOS EL CURSOR
@@ -97,8 +96,8 @@ main proc
   		int 10h
 
       lea dx, t5
-      mov ah, 9
-      int 21h
+      call imprimir
+
 
       mov cursorY, 7
       mov cursorX, 20
@@ -110,8 +109,8 @@ main proc
   		int 10h
 
       lea dx, t66
-      mov ah, 9
-      int 21h
+      call imprimir
+
 
       mov cursorY, 12
       mov cursorX, 1
@@ -123,8 +122,8 @@ main proc
   		int 10h
 
       lea dx, t76
-      mov ah, 9
-      int 21h
+      call imprimir
+
 
       mov cursorY, 24
       mov cursorX, 15
@@ -136,8 +135,8 @@ main proc
   		int 10h
 
       lea dx, nombres
-      mov ah, 9
-      int 21h
+      call imprimir
+
 
       mov cursorY, 19
       mov cursorX, 21
@@ -149,8 +148,8 @@ main proc
   		int 10h
 
       lea dx, u1
-      mov ah, 9
-      int 21h
+      call imprimir
+
 
       inc cursorY
 
@@ -161,8 +160,8 @@ main proc
   		int 10h
 
       lea dx, u2
-      mov ah, 9
-      int 21h
+      call imprimir
+
 
       inc cursorY
 
@@ -173,8 +172,8 @@ main proc
   		int 10h
 
       lea dx, u3
-      mov ah, 9
-      int 21h
+      call imprimir
+
 
       inc cursorY
 
@@ -185,10 +184,11 @@ main proc
   		int 10h
 
       lea dx, u4
-      mov ah, 9
-      int 21h
+      call imprimir
+
 
     mov ah, 1
     int 21h
+
   main endp
   end

@@ -22,11 +22,12 @@
 
 
 .code
+extrn imprimir: proc
 main proc
   mov ax, @data
   mov ds, ax
 
-  ;-----------------------------------------------------------------------
+  ;----------------------------------------------------------------------------
   		;ESTABLECEMOS LOS PARAMETROS DE VIDEO, PANTALLA DE 80x25 - CON LA INT 10
   		;Y EL MODO 3
 
@@ -42,28 +43,26 @@ main proc
       mov cursorX, 25
       mov cursorY, 1
 
-      mov ah, 2		;POSICIONAMOS EL CURSOR
-  		mov bh, 0 		;PAGINA SIEMPRE LA MISMA
-  		mov dh, cursorY 		;COORDENADA DE FILA
-  		mov dl, cursorX		;COORDENADA DE COLUMNA
+      mov ah, 2		      ;POSICIONAMOS EL CURSOR
+  		mov bh, 0 		    ;PAGINA SIEMPRE LA MISMA
+  		mov dh, cursorY   ;COORDENADA DE FILA
+  		mov dl, cursorX	  ;COORDENADA DE COLUMNA
   		int 10h
 
   		lea dx, titulo	;IMPPRIMIMOS EL CARTEL DEL NIVEL EN EL QUE ESTA EL JUGADOR
-  		mov ah, 9
-  		int 21h
+  		call imprimir
 
       mov cursorX, 1
       mov cursorY, 3
 
-      mov ah, 2		;POSICIONAMOS EL CURSOR
-  		mov bh, 0 		;PAGINA SIEMPRE LA MISMA
-  		mov dh, cursorY 		;COORDENADA DE FILA
-  		mov dl, cursorX		;COORDENADA DE COLUMNA
+      mov ah, 2		       ;POSICIONAMOS EL CURSOR
+  		mov bh, 0 		     ;PAGINA SIEMPRE LA MISMA
+  		mov dh, cursorY 	 ;COORDENADA DE FILA
+  		mov dl, cursorX		 ;COORDENADA DE COLUMNA
   		int 10h
 
   		lea dx, nivel	;IMPPRIMIMOS EL CARTEL DEL NIVEL EN EL QUE ESTA EL JUGADOR
-  		mov ah, 9
-  		int 21h
+  		call imprimir
 
       mov cursorX, 1
       mov cursorY, 24
@@ -75,13 +74,14 @@ main proc
   		int 10h
 
   		lea dx, errores	;IMPRIMIMOS EL NUMERO DE ERRORES QUE TENDRA EL JUGADOR
-  		mov ah, 9		;LA IDEA ES QUE VAYA INCREMENTANDO Y CUANDO SUPERE 3
-  		int 21h			;REINICE EL JUEGO
+  		call imprimir		    ;LA IDEA ES QUE VAYA INCREMENTANDO Y CUANDO SUPERE 3
+  		call imprimir			    ;REINICE EL JUEGO
 
       mov cl, cantidadFilas
       mov bx, 0
       mov cursorX, 35
       mov cursorY, 10
+
       imprimirFilas:
         mov ah, 2h		;POSICIONAMOS EL CURSOR
         mov bh, 0 		;PAGINA SIEMPRE LA MISMA
@@ -106,8 +106,7 @@ main proc
   		int 10h
 
   		lea dx, CuadColum	;IMPRIMIMOS LAS PISTAS QUE REFIEREN A LAS COLUMNAS
-  		mov ah, 9
-  		int 21h
+  		call imprimir
 
       mov cursorX, 37
       mov cursorY, 8
@@ -119,7 +118,7 @@ main proc
   		int 10h
 
   		lea dx, CuadColum1	;IMPRIMIMOS LAS PISTAS QUE REFIEREN A LAS COLUMNAS
-  		mov ah, 9
+  		call imprimir
   		int 21h
 
 ;------------------------------------------------------------------------------
@@ -136,8 +135,7 @@ main proc
         int 10h
 
         lea dx, grilla
-        mov ah, 9	      ;IMPRIMIMOS LA GRILLA
-        int 21h
+        call imprimir	      ;IMPRIMIMOS LA GRILLA
 
         inc cursorY
       loop imprimirGrilla
