@@ -10,7 +10,7 @@
   NroError 	        db "0", 24h
   CuadColum         db "0 3 2 3 0", 24h
   CuadColum1        db "  1   1  ", 24h
-  CuadFila          db "03230"
+  CuadFila          db "03230", 24h
   cantidadColumnas  db 5
   cantidadFilas     db 5
   cursorX           db 0
@@ -26,81 +26,6 @@ extrn cursor:proc
 main proc
   mov ax, @data
   mov ds, ax
-
-  		;------------------------------------------------------------------------
-      ;ESTABLECEMOS EL CONTENIDO EXTERIOR AL JUEGO:
-      ;               -NUMERO DE NIVEL
-  		;								-CANTIDAD DE ERRORES
-  		;								-CUADRADOS A PINTAR (CuadColum y CuadFila)
-
-      mov cursorX, 25
-      mov cursorY, 1
-
-      mov dh, cursorY 		    ;COORDENADA DE FILA
-  		mov dl, cursorX		      ;COORDENADA DE COLUMNA
-  		call cursor
-
-  		lea dx, titulo	;IMPPRIMIMOS EL CARTEL DEL NIVEL EN EL QUE ESTA EL JUGADOR
-  		call imprimir
-
-      mov cursorX, 1
-      mov cursorY, 3
-
-      mov dh, cursorY 		    ;COORDENADA DE FILA
-  		mov dl, cursorX		      ;COORDENADA DE COLUMNA
-  	  call cursor
-
-  		lea dx, nivel	;IMPPRIMIMOS EL CARTEL DEL NIVEL EN EL QUE ESTA EL JUGADOR
-  		call imprimir
-
-      mov cursorX, 1
-      mov cursorY, 24
-
-      mov dh, cursorY 		    ;COORDENADA DE FILA
-  		mov dl, cursorX		      ;COORDENADA DE COLUMNA
-  		call cursor
-
-  		lea dx, errores	    ;IMPRIMIMOS EL NUMERO DE ERRORES QUE TENDRA EL JUGADOR
-  		call imprimir		    ;LA IDEA ES QUE VAYA INCREMENTANDO Y CUANDO SUPERE 3
-  					              ;REINICE EL JUEGO
-
-      mov cl, cantidadFilas
-      mov bx, 0
-      mov cursorX, 35
-      mov cursorY, 10
-
-      imprimirFilas:
-        mov dh, cursorY 		   ;COORDENADA DE FILA
-        mov dl, cursorX		     ;COORDENADA DE COLUMNA
-        call cursor
-
-        mov dl, CuadFila[bx]	;IMPRIMIMOS LAS PISTAS QUE REFIEREN A LAS FILAS
-        mov ah, 2
-        int 21h
-        inc bx
-        inc cursorY
-      loop imprimirFilas
-
-      mov cursorX, 37
-      mov cursorY, 9
-
-      mov dh, cursorY 		    ;COORDENADA DE FILA
-  		mov dl, cursorX		      ;COORDENADA DE COLUMNA
-  		call cursor
-
-  		lea dx, CuadColum	;IMPRIMIMOS LAS PISTAS QUE REFIEREN A LAS COLUMNAS
-  		call imprimir
-
-      mov cursorX, 37
-      mov cursorY, 8
-
-      mov dh, cursorY 		    ;COORDENADA DE FILA
-  		mov dl, cursorX		      ;COORDENADA DE COLUMNA
-  		call cursor
-
-  		lea dx, CuadColum1	;IMPRIMIMOS LAS PISTAS QUE REFIEREN A LAS COLUMNAS
-  		call imprimir
-  		int 21h
 
 ;------------------------------------------------------------------------------
 ;IMPRIMIMOS LA MASCARA DE LA GRILLA VACIA
