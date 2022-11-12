@@ -27,14 +27,6 @@ main proc
   mov ax, @data
   mov ds, ax
 
-  ;----------------------------------------------------------------------------
-  		;ESTABLECEMOS LOS PARAMETROS DE VIDEO, PANTALLA DE 80x25 - CON LA INT 10
-  		;Y EL MODO 3
-
-  		mov ah, 0
-  		mov al, 3
-  		int 10h
-
   		;------------------------------------------------------------------------
       ;ESTABLECEMOS EL CONTENIDO EXTERIOR AL JUEGO:
       ;               -NUMERO DE NIVEL
