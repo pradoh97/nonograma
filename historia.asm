@@ -24,14 +24,6 @@ extrn imprimir:proc
 extrn cursor:proc
 
 	historia proc
-
-	mov ax, @data
-	mov ds, ax
-
-			mov ah, 0
-  		mov al, 3
-  		int 10h
-
   		mov dh, 1 		    ;COORDENADA DE FILA
   		mov dl, 27	      ;COORDENADA DE COLUMNA
   		call cursor
