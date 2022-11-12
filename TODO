@@ -13,3 +13,9 @@ Funcionalidad:
  - Contar aciertos
  - Volver a mover a la posición en la que se hizo el cambio de caracter.
  - Menú moviendose con el cursor. (Opcional)
+
+Vector nivel:
+ - 0 posicion invalida.
+ - 1 posicion válida.
+ - 2 posicion válida encontrada.
+ - 24h fin vector.
