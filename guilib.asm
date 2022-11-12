@@ -6,6 +6,7 @@
 .code
 public imprimir
 public cursor
+public limpiarPantalla
 
 ;Recibe el offset de lo que se va a imprimr por el registro DX
 imprimir proc
@@ -22,4 +23,15 @@ cursor proc
 
   ret
 cursor endp
+
+limpiarPantalla proc
+	push ax
+
+	mov ah, 0
+	mov al, 3
+	int 10h
+
+	pop ax
+ret
+limpiarPantalla endp
 end
