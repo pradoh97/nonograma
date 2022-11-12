@@ -18,11 +18,11 @@
   grilla            db 176, 20h, 176, 20h, 176, 20h, 176, 20h, 176, 24h
   posX              db 0
   posY              db 0
-  vec               db "1111101110001000101011111"
-
 
 .code
-extrn imprimir: proc
+extrn imprimir:proc
+extrn cursor:proc
+
 main proc
   mov ax, @data
   mov ds, ax
@@ -36,18 +36,17 @@ main proc
   		int 10h
 
   		;------------------------------------------------------------------------
-  		;ESTABLECEMOS EL CONTENIDO EXTERIOR AL JUEGO: 	-NUMERO DE NIVEL
-  		;												-CANTIDAD DE ERRORES
-  		;												-CUADRADOS A PINTAR (CuadColum y CuadFila)
+      ;ESTABLECEMOS EL CONTENIDO EXTERIOR AL JUEGO:
+      ;               -NUMERO DE NIVEL
+  		;								-CANTIDAD DE ERRORES
+  		;								-CUADRADOS A PINTAR (CuadColum y CuadFila)
 
       mov cursorX, 25
       mov cursorY, 1
 
-      mov ah, 2		      ;POSICIONAMOS EL CURSOR
-  		mov bh, 0 		    ;PAGINA SIEMPRE LA MISMA
-  		mov dh, cursorY   ;COORDENADA DE FILA
-  		mov dl, cursorX	  ;COORDENADA DE COLUMNA
-  		int 10h
+      mov dh, cursorY 		    ;COORDENADA DE FILA
+  		mov dl, cursorX		      ;COORDENADA DE COLUMNA
+  		call cursor
 
   		lea dx, titulo	;IMPPRIMIMOS EL CARTEL DEL NIVEL EN EL QUE ESTA EL JUGADOR
   		call imprimir
@@ -55,11 +54,9 @@ main proc
       mov cursorX, 1
       mov cursorY, 3
 
-      mov ah, 2		       ;POSICIONAMOS EL CURSOR
-  		mov bh, 0 		     ;PAGINA SIEMPRE LA MISMA
-  		mov dh, cursorY 	 ;COORDENADA DE FILA
-  		mov dl, cursorX		 ;COORDENADA DE COLUMNA
-  		int 10h
+      mov dh, cursorY 		    ;COORDENADA DE FILA
+  		mov dl, cursorX		      ;COORDENADA DE COLUMNA
+  	  call cursor
 
   		lea dx, nivel	;IMPPRIMIMOS EL CARTEL DEL NIVEL EN EL QUE ESTA EL JUGADOR
   		call imprimir
@@ -67,15 +64,13 @@ main proc
       mov cursorX, 1
       mov cursorY, 24
 
-  		mov ah, 2h		;POSICIONAMOS EL CURSOR
-  		mov bh, 0 		;PAGINA SIEMPRE LA MISMA
-  		mov dh, cursorY 		;COORDENADA DE FILA
-  		mov dl, cursorX		;COORDENADA DE COLUMNA
-  		int 10h
+      mov dh, cursorY 		    ;COORDENADA DE FILA
+  		mov dl, cursorX		      ;COORDENADA DE COLUMNA
+  		call cursor
 
-  		lea dx, errores	;IMPRIMIMOS EL NUMERO DE ERRORES QUE TENDRA EL JUGADOR
+  		lea dx, errores	    ;IMPRIMIMOS EL NUMERO DE ERRORES QUE TENDRA EL JUGADOR
   		call imprimir		    ;LA IDEA ES QUE VAYA INCREMENTANDO Y CUANDO SUPERE 3
-  		call imprimir			    ;REINICE EL JUEGO
+  					              ;REINICE EL JUEGO
 
       mov cl, cantidadFilas
       mov bx, 0
@@ -83,11 +78,9 @@ main proc
       mov cursorY, 10
 
       imprimirFilas:
-        mov ah, 2h		;POSICIONAMOS EL CURSOR
-        mov bh, 0 		;PAGINA SIEMPRE LA MISMA
-        mov dh, cursorY 		;COORDENADA DE FILA
-        mov dl, cursorX		;COORDENADA DE COLUMNA
-        int 10h
+        mov dh, cursorY 		   ;COORDENADA DE FILA
+        mov dl, cursorX		     ;COORDENADA DE COLUMNA
+        call cursor
 
         mov dl, CuadFila[bx]	;IMPRIMIMOS LAS PISTAS QUE REFIEREN A LAS FILAS
         mov ah, 2
@@ -99,11 +92,9 @@ main proc
       mov cursorX, 37
       mov cursorY, 9
 
-      mov ah, 2h		;POSICIONAMOS EL CURSOR
-  		mov bh, 0 		;PAGINA SIEMPRE LA MISMA
-  		mov dh, cursorY 		;COORDENADA DE FILA
-  		mov dl, cursorX		;COORDENADA DE COLUMNA
-  		int 10h
+      mov dh, cursorY 		    ;COORDENADA DE FILA
+  		mov dl, cursorX		      ;COORDENADA DE COLUMNA
+  		call cursor
 
   		lea dx, CuadColum	;IMPRIMIMOS LAS PISTAS QUE REFIEREN A LAS COLUMNAS
   		call imprimir
@@ -111,11 +102,9 @@ main proc
       mov cursorX, 37
       mov cursorY, 8
 
-      mov ah, 2h		      ;POSICIONAMOS EL CURSOR
-  		mov bh, 0 		      ;PAGINA SIEMPRE LA MISMA
-  		mov dh, cursorY 		;COORDENADA DE FILA
-  		mov dl, cursorX		  ;COORDENADA DE COLUMNA
-  		int 10h
+      mov dh, cursorY 		    ;COORDENADA DE FILA
+  		mov dl, cursorX		      ;COORDENADA DE COLUMNA
+  		call cursor
 
   		lea dx, CuadColum1	;IMPRIMIMOS LAS PISTAS QUE REFIEREN A LAS COLUMNAS
   		call imprimir
@@ -128,11 +117,9 @@ main proc
       mov cursorX, 37
       mov cursorY, 10
       imprimirGrilla:
-        mov ah, 2h		;POSICIONAMOS EL CURSOR
-        mov bh, 0 		;PAGINA SIEMPRE LA MISMA
-        mov dh, cursorY 		;COORDENADA DE FILA
-        mov dl, cursorX		;COORDENADA DE COLUMNA
-        int 10h
+        mov dh, cursorY 		   ;COORDENADA DE FILA
+        mov dl, cursorX		      ;COORDENADA DE COLUMNA
+        call cursor
 
         lea dx, grilla
         call imprimir	      ;IMPRIMIMOS LA GRILLA
@@ -154,76 +141,6 @@ main proc
 
       ;cmp al, 08h
       ;je MenuPrincipal
-
-    tecla:
-
-      mov ah, 0
-      int 16h
-
-      cmp al, 20h
-      je comparoVec
-
-      cmp al, 73h
-      je abajo
-
-      cmp al, 77h
-      je arriba
-
-      cmp al, 61h
-      je izquierda
-
-      cmp al, 64h
-      je derecha
-
-      jmp tecla
-
-    comparoVec:
-      mov ah, 09h
-      mov al, 219
-      mov bh, 0h
-      mov bl, 4h
-      mov cx, 1
-      int 10h
-
-    abajo:
-      cmp posY, 14
-      je tecla
-      inc posY
-      mov ah, 2
-      mov dl, posX
-      mov dh, posY
-      int 10h
-      jmp tecla
-
-    arriba:
-      cmp posY, 10
-      je tecla
-      dec posY
-      mov ah, 2
-      mov dl, posX
-      mov dh, posY
-      int 10h
-      jmp tecla
-
-    derecha:
-      cmp posX, 45
-      je tecla
-      add posX, 2
-      mov ah, 2
-      mov dl, posX
-      mov dh, posY
-      int 10h
-      jmp tecla
-
-    izquierda:
-      cmp posX, 37
-      je tecla
-      sub posX, 2
-      mov ah, 2
-      mov dl, posX
-      mov dh, posY
-      int 10h
-      jmp tecla
 
 main endp
 end

@@ -1,11 +1,11 @@
 Game over
- - Pantalla de fin de juego?
+ - Pantalla de fin de juego
  - Volver al menú inicial
 
 Hacer función
- - Movimiento jugador
- - Movimiento cursor
- - Impresión grilla
+ - Movimiento jugador ("movjug.asm")
+ - Movimiento cursor ("pos_cursor")
+ - Impresión grilla ("imprimir")
 
 Funcionalidad:
  - Vector con posiciones de valores correctos
@@ -13,3 +13,4 @@ Funcionalidad:
  - Calcular aciertos (en base a la cantidad de unos del vector)
  - Contar aciertos
  - Volver a mover a la posición en la que se hizo el cambio de caracter.
+ - Menú moviendose con el cursor.
