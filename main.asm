@@ -3,12 +3,20 @@
 .stack 100h
 .data
   cantidadErrores   db 0
+  cantidadAciertos  db 0
+  limiteX           db 0
+  limiteY           db 0
+  origenGrillaX     db 0
+  origenGrillaY     db 0
+  posicionJugadorX  db 0
+  posicionJugadorY  db 0
 .code
 extrn mostrarMenu:proc
 extrn actualizarErrores:proc
 extrn nivel1:proc
 ; extrn nivel2:proc
 ; extrn nivel3:proc
+extrn movimientoJugador:proc
 extrn historia:proc
 extrn hud:proc
 extrn limpiarPantalla:proc
@@ -36,10 +44,10 @@ opciones:
   je empezarNivel1
 
   cmp al, "2"   ;SI ES 2 VA AL NIVEL 2
-  je nivel2
+  je empezarNivel2
 
   cmp al, "3"   ;SI ES 3 VA AL NIVEL 3
-  je nivel3
+  je empezarNivel3
 
   cmp al, "4"   ;SI ES CUATRO VA A LA HISTORIA DEL JUEGO
   je mostrarHistoria
@@ -53,26 +61,38 @@ empezarNivel1:
     call limpiarPantalla
     call nivel1
 
-    jmp fin
+    ;Límite inferior
+    push 15
+    ;Límite derecho
+    push 44
+    ;Límite izquierdo
+    push 36
+    ;Límite superior
+    push 11
 
-nivel2:
+    jmp gameLoop
+
+empezarNivel2:
+  ; call limpiarPantalla
   ; call nivel2
-  jmp fin
+  ;
+  ; push
+  ; jmp gameLoop
 
-nivel3:
+empezarNivel3:
+  ; call limpiarPantalla
   ; call nivel3
-  jmp fin
+  ; jmp gameLoop
+
+gameLoop:
+  call movimientoJugador
+jmp inicio
 
 mostrarHistoria:
   call limpiarPantalla
   call historia
   jmp inicio
-
 fin:
-  ;Esto lo llamo solo para hacer pruebas, borrar cuando terminemos (lo estoy usando para ver que se imprima el hud en el nivel sin tener el nivel)
-  mov ah, 08h
-  int 21h
-
   call limpiarPantalla
 
   mov ax, 4c00h
