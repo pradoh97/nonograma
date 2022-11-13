@@ -7,6 +7,7 @@
 public imprimir
 public cursor
 public limpiarPantalla
+public imprimirCaracter
 
 ;Recibe el offset de lo que se va a imprimr por el registro DX
 imprimir proc
@@ -15,7 +16,14 @@ imprimir proc
 	ret
 imprimir endp
 
-;Recibe en dl la coordenada y, en dh la coordenada x a donde posicionar el cursor.
+;Recibe el offset de lo que se va a imprimr por el registro DL
+imprimirCaracter proc
+	mov ah, 2
+	int 21h
+	ret
+imprimirCaracter endp
+
+;Recibe en dh la coordenada y, en dl la coordenada x a donde posicionar el cursor.
 cursor proc
   mov ah, 2		       ;POSICIONAMOS EL CURSOR
   mov bh, 0 		     ;PAGINA SIEMPRE LA MISMA
