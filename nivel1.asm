@@ -2,24 +2,21 @@
 .model small
 .stack 100h
 .data
-  pistaColumna      db "0 3 2 3 0", 24h
-  pistaFila         db "03230", 24h
-  cantidadPistasFila db 3
+  pistaColumna          db "   1  131 31113"
+  pistaFila             db " 1    111 31313"
+  vectorSolucion        db "0111010001101111000101110", 24h
+  vectorJugada          db "0111010001101111000101110", 24h
+  cantidadPistasFila    db 3
   cantidadPistasColumna db 3
-  nroNivel          db 1 ;es el caracter 23° de la linea de cantidad de errores.
-  origenGrillaX     db 35
-  origenGrillaY     db 10
-  cantidadFilas     db 5
-  cantidadColumnas  db 5
-;   1 2 3 2 1
-;   1 2 1 2 1
-; 5 ■ ■ ■ ■ ■
-; 3 ■ ■ ■ ■ ■
-; 1 ■ ■ ■ ■ ■
-; 11■ ■ ■ ■ ■
-; 5 ■ ■ ■ ■ ■
+  nroNivel              db 1 ;es el caracter 23° de la linea de cantidad de errores.
+  origenGrillaX         db 36
+  origenGrillaY         db 11
+  cantidadFilas         db 5
+  cantidadColumnas      db 5
+
 .code
 extrn hud:proc
+extrn vec:proc
 public nivel1
 nivel1 proc
   ;Número nivel
@@ -31,6 +28,12 @@ nivel1 proc
   push dx
   lea dx, pistaFila
   push dx
+
+  ;cantidad de pistas fila y columna
+  mov al, cantidadPistasFila
+  push ax
+  mov al, cantidadPistasColumna
+  push ax
 
   ;Coordenadas de origen en X y después Y
   mov al, origenGrillaX
@@ -44,8 +47,13 @@ nivel1 proc
   mov al, cantidadColumnas
   push ax
 
-  call hud
+  lea dx, vectorSolucion
+  push dx
+  lea dx, vectorJugada
+  push dx
+  call vec
 
+  call hud
   ret
 nivel1 endp
 end
