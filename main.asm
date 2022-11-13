@@ -2,16 +2,11 @@
 .model small
 .stack 100h
 .data
-  nroNivel          db "" ;es el caracter 23° de la linea de cantidad de errores.
   cantidadErrores   db 0
-  pistaColumna      db "0 3 2 3 0", 24h
-  pistaFila         db "03230", 24h
-  origenPistasX     db ""
-  origenPistasY     db ""
 .code
 extrn mostrarMenu:proc
 extrn actualizarErrores:proc
-; extrn nivel1:proc
+extrn nivel1:proc
 ; extrn nivel2:proc
 ; extrn nivel3:proc
 extrn historia:proc
@@ -38,7 +33,7 @@ opciones:
   int 16h       ;UNA VEZ QUE TENEMOS LA TECLA EN AL LA USAMOS PARA COMPARAR
 
   cmp al, "1"   ;SI ES 1 VA AL NIVEL 1
-  je nivel1
+  je empezarNivel1
 
   cmp al, "2"   ;SI ES 2 VA AL NIVEL 2
   je nivel2
@@ -54,32 +49,9 @@ opciones:
 
   jmp opciones  ;SI ES CUALQUIER OTRA TECLA VUELVE A PEDIR UNA VALIDA
 
-  nivel1:
-    ;Número nivel
-    push 1
-
-    ;Pistas
-    lea dx, pistaColumna
-    push dx
-    lea dx, pistaFila
-    push dx
-
-    ;Coordenadas de origen en X y después Y
-    push 25
-    push 1
-
-    ;Cantidad de filas y columnas
-    push 5
-    push 5
-
+empezarNivel1:
     call limpiarPantalla
-    call hud
-
-    mov ah, 01h
-    int 21h
-
-    push 1
-    call actualizarErrores
+    call nivel1
 
     jmp fin
 
@@ -98,7 +70,7 @@ mostrarHistoria:
 
 fin:
   ;Esto lo llamo solo para hacer pruebas, borrar cuando terminemos (lo estoy usando para ver que se imprima el hud en el nivel sin tener el nivel)
-  mov ah, 01h
+  mov ah, 08h
   int 21h
 
   call limpiarPantalla
