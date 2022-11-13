@@ -1,24 +1,25 @@
 Game over
  - Pantalla de fin de juego
- - Volver al menú inicial (falta en niveles)
 
 Hacer función
- - Movimiento jugador ("movjug.asm")
- - Impresión grilla ("imprimir")
+ - Movimiento jugador ("movjug.asm") listo movimiento, falta comparar respuestas.
 
 Funcionalidad:
- - Vector con posiciones de valores correctos
+ - Vector con posiciones de valores correctos (ya están creados, no están en uso)
  - Agregar vector
  - Calcular aciertos (en base a la cantidad de unos del vector)
  - Contar aciertos
  - Volver a mover a la posición en la que se hizo el cambio de caracter.
- - Menú moviendose con el cursor. (Opcional)
 
-Vector nivel:
- - 0 posicion invalida.
- - 1 posicion válida.
- - 2 posicion válida encontrada.
- - 24h fin vector.
+Nivel:
+  Vector solucion y jugada
+   - 0 posicion invalida.
+   - 1 posicion válida.
+   - 2 posicion válida encontrada.
+   - 3 posicion inválida encontrada.
+   - 24h fin vector.
+   - La pinta del vector de un nivel "0111010001101111000101110"
+
 
 Game loop:
  - Contabilizar errores
