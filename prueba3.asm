@@ -18,6 +18,7 @@
   grilla            db 176, 20h, 176, 20h, 176, 20h, 176, 20h, 176, 24h
   posX              db 0
   posY              db 0
+  
 
 .code
 extrn imprimir:proc
