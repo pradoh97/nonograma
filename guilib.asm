@@ -16,7 +16,7 @@ imprimir proc
 	ret
 imprimir endp
 
-;Recibe el offset de lo que se va a imprimr por el registro DL
+;Recibe lo que se va a imprimr por el registro DL
 imprimirCaracter proc
 	mov ah, 2
 	int 21h
