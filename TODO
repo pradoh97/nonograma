@@ -19,3 +19,6 @@ Vector nivel:
  - 1 posicion válida.
  - 2 posicion válida encontrada.
  - 24h fin vector.
+
+Game loop:
+ - Contabilizar errores
