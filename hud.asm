@@ -12,6 +12,8 @@
   pistaColumna      dw 0
   cursorX           db 0
   cursorY           db 0
+  origenGrillaX     db 0
+  origenGrillaY     db 0
   controles         db "Usa W-A-S-D para moverte y ESPACIO para seleccionar.", 0dh, 0ah
                     db " Si deseas volver al menu principal presiona ESC.", 24h
 
@@ -28,8 +30,8 @@ public actualizarErrores
 ; - Las pistas para las filas: 12
 ; - El origen de pistas en X: 10
 ; - El origen de pistas en Y: 8
-; - La cantidad de filas a imprimir: 10
-; - La cantidad de columnas a imprimir: 8
+; - La cantidad de filas a imprimir: 6
+; - La cantidad de columnas a imprimir: 4
 hud proc
   ;------------------------------------------------------------------------
   ;ESTABLECEMOS EL CONTENIDO EXTERIOR AL JUEGO:
@@ -57,9 +59,9 @@ hud proc
 
     ;Coordenadas de origen en X y después Y
     mov dl, ss:[bp+10]
-    mov cursorX, dl
+    mov origenGrillaX, dl
     mov dl, ss:[bp+8]
-    mov cursorY, dl
+    mov origenGrillaY, dl
 
     ;Cantidad de filas y columnas
     mov dl, ss:[bp+6]
@@ -68,8 +70,8 @@ hud proc
     mov cantidadColumnas, dl
 
   imprimirTituloJuego:
-    mov dh, cursorY 		    ;COORDENADA DE FILA
-    mov dl, cursorX		      ;COORDENADA DE COLUMNA
+    mov dh, 1 		    ;COORDENADA DE FILA
+    mov dl, 25        ;COORDENADA DE COLUMNA
 
     call cursor
 
@@ -119,13 +121,15 @@ hud proc
   ;Paso previo a imprimir filas.
   mov cl, cantidadFilas
   mov bx, 0
-  mov cursorX, 35
-  mov cursorY, 10
+  mov al, origenGrillaY
+  mov cursorY, al
 
   imprimirPistasFilas:
     mov dh, cursorY 		   ;COORDENADA DE FILA
-    mov dl, cursorX		     ;COORDENADA DE COLUMNA
+    mov dl, origenGrillaX		     ;COORDENADA DE COLUMNA
+
     call cursor
+
     mov si, pistaFila
     mov dl, byte ptr[si+bx]	;IMPRIMIMOS LAS PISTAS QUE REFIEREN A LAS FILAS
     call imprimirCaracter
@@ -134,8 +138,13 @@ hud proc
   loop imprimirPistasFilas
 
   imprimirPistasColumnas:
-    mov cursorX, 37
-    mov cursorY, 9
+    mov al, origenGrillaX
+    add al, 2
+    mov cursorX, al
+
+    mov al, origenGrillaY
+    dec al
+    mov cursorY, al
 
     mov dh, cursorY 		    ;COORDENADA DE FILA
     mov dl, cursorX		      ;COORDENADA DE COLUMNA
@@ -149,8 +158,7 @@ hud proc
     pop bx
     pop dx
     pop bp
-
-  ret 8
+  ret 14
 hud endp
 
 ;Recibe la cantidad de errores por stack.
@@ -167,6 +175,10 @@ actualizarErrores proc
   mov dl, ss:[bp+4]
   add dl, 30h
   call imprimirCaracter
-  ret 6
+
+  pop dx
+  pop bx
+  pop bp
+  ret 2
 actualizarErrores endp
 end
