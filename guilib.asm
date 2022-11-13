@@ -40,6 +40,6 @@ limpiarPantalla proc
 	int 10h
 
 	pop ax
-ret
+	ret
 limpiarPantalla endp
 end
