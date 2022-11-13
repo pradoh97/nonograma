@@ -2,20 +2,23 @@
 .model small
 .stack 100h
 .data
-  titulo            db "N O N O G R A M - U N S A M", 24h
-  nivel             db "NIVEL ", 24h
-  numeroNivel       db 0 ;es el caracter 23° de la linea de cantidad de errores.
-  errores           db "CANTIDAD DE ERRORRES: ", 24h
-  cantidadFilas     db 0
-  cantidadColumnas  db 0
-  pistaFila         dw 0
-  pistaColumna      dw 0
-  cursorX           db 0
-  cursorY           db 0
-  origenGrillaX     db 0
-  origenGrillaY     db 0
-  controles         db "Usa W-A-S-D para moverte y ESPACIO para seleccionar.", 0dh, 0ah
-                    db " Si deseas volver al menu principal presiona ESC.", 24h
+  titulo                db "N O N O G R A M - U N S A M", 24h
+  nivel                 db "NIVEL ", 24h
+  numeroNivel           db 0 ;es el caracter 23° de la linea de cantidad de errores.
+  errores               db "CANTIDAD DE ERRORRES: ", 24h
+  cantidadFilas         db 0
+  cantidadColumnas      db 0
+  cantidadPistasFila    db 0
+  cantidadPistasColumna db 0
+  pistaFila             dw 0
+  pistaColumna          dw 0
+  cursorX               db 0
+  cursorY               db 0
+  origenGrillaX         db 0
+  origenGrillaY         db 0
+  controles             db "Usa W-A-S-D para moverte y ESPACIO para seleccionar.", 0dh, 0ah
+                        db " Si deseas volver al menu principal presiona ESC.", 24h
+  grilla                db 0
 
 .code
 extrn imprimir:proc
@@ -48,14 +51,20 @@ hud proc
 
   cargarDesdeStack:
     ;Número de nivel
-    mov dl, ss:[bp+16]
+    mov dl, ss:[bp+20]
     mov numeroNivel, dl
 
     ;Pistas para columnas y después filas
-    mov bx, ss:[bp+14]
+    mov bx, ss:[bp+18]
     mov pistaColumna, bx
-    mov bx, ss:[bp+12]
+    mov bx, ss:[bp+16]
     mov pistaFila, bx
+
+    ;Cantidad de pistas filas y cantidad pistas columnas
+    mov al, ss:[bp+14]
+    mov cantidadPistasFila, al
+    mov al, ss:[bp+12]
+    mov cantidadPistasColumna, al
 
     ;Coordenadas de origen en X y después Y
     mov dl, ss:[bp+10]
@@ -92,6 +101,7 @@ hud proc
     add numeroNivel, 30h
     mov dl, numeroNivel
     call imprimirCaracter
+
   imprimirControles:
     mov cursorX, 1
     mov cursorY, 24
@@ -118,47 +128,116 @@ hud proc
     mov dl, 30h
     int 21h
 
-  ;Paso previo a imprimir filas.
-  mov cl, cantidadFilas
+  ;Posicionar cursor en la primera hilera de pistas a imprimir (la de mas a la izquierda).
+  mov al, origenGrillaX
+  sub al, cantidadPistasFila
+  mov cursorX, al
+
+  mov cl, cantidadPistasFila
   mov bx, 0
+
+  imprimirPistasVertical:
+    mov al, origenGrillaY
+    mov cursorY, al
+    push cx
+
+    ;Inicio el contador de filas
+    mov cl, cantidadFilas
+    imprimirPistasFilas:
+      ;Posiciono el cursor
+      mov dh, cursorY
+      mov dl, cursorX
+      call cursor
+
+      mov si, pistaFila
+      mov dl, byte ptr[si+bx]	;IMPRIMIMOS LAS PISTAS QUE REFIEREN A LAS FILAS
+      call imprimirCaracter
+      inc bx
+      inc cursorY
+    loop imprimirPistasFilas
+
+    pop cx
+    inc cursorX
+  loop imprimirPistasVertical
+
+  ;Posicionar cursor en la primera hilera de pistas a imprimir (la de mas a arriba).
+  mov al, origenGrillaY
+  sub al, cantidadPistasColumna
+  mov cursorY, al
+
+  mov cl, cantidadPistasColumna
+  mov bx, 0
+
+  imprimirPistasHorizontal:
+    mov al, origenGrillaX
+    mov cursorX, al
+    push cx
+
+    ;Inicio el contador de filas
+    mov cl, cantidadFilas
+    imprimirPistasColumnas:
+      ;Posiciono el cursor
+      mov dh, cursorY
+      mov dl, cursorX
+      call cursor
+
+      mov si, pistaFila
+      mov dl, byte ptr[si+bx]	;IMPRIMIMOS LAS PISTAS QUE REFIEREN A LAS FILAS
+      call imprimirCaracter
+      inc bx
+      add cursorX, 2
+    loop imprimirPistasColumnas
+
+    pop cx
+    inc cursorY
+  loop imprimirPistasHorizontal
+
   mov al, origenGrillaY
   mov cursorY, al
 
-  imprimirPistasFilas:
-    mov dh, cursorY 		   ;COORDENADA DE FILA
-    mov dl, origenGrillaX		     ;COORDENADA DE COLUMNA
-
-    call cursor
-
-    mov si, pistaFila
-    mov dl, byte ptr[si+bx]	;IMPRIMIMOS LAS PISTAS QUE REFIEREN A LAS FILAS
-    call imprimirCaracter
-    inc bx
-    inc cursorY
-  loop imprimirPistasFilas
-
-  imprimirPistasColumnas:
+  mov cl, cantidadFilas
+  ;Este loop se mueve por las filas (loop lento)
+  imprimirGrilla:
+    ;Nos posiciona en la columna 0
     mov al, origenGrillaX
-    add al, 2
     mov cursorX, al
 
-    mov al, origenGrillaY
-    dec al
-    mov cursorY, al
+    push cx
 
-    mov dh, cursorY 		    ;COORDENADA DE FILA
-    mov dl, cursorX		      ;COORDENADA DE COLUMNA
+    ;Inicio el contador de filas y lo duplico porque usamos el doble de ancho para que se vea re canchero.
+    mov cl, cantidadColumnas
+    add cl, cl
+
+    ;Este loop se mueve por las columnas (loop rápido)
+    imprimirGrillaCeldas:
+      ;Posiciono el cursor
+      mov dh, cursorY
+      mov dl, cursorX
+      call cursor
+
+      mov dl, 176	;IMPRIMIMOS EL CARACTER DE LA MATRIZ (el cuadradito)
+      call imprimirCaracter
+
+      inc cursorX
+    loop imprimirGrillaCeldas
+
+    pop cx
+    inc cursorY
+  loop imprimirGrilla
+
+  moverCursorAOrigen:
+    mov dh, origenGrillaY
+    mov dl, origenGrillaX
     call cursor
-
-    mov dx, pistaColumna	;IMPRIMIMOS LAS PISTAS QUE REFIEREN A LAS COLUMNAS
-    call imprimir
 
   restaurarRegistros:
     pop ax
     pop bx
     pop dx
     pop bp
-  ret 14
+
+  ret 18
+
 hud endp
 
 ;Recibe la cantidad de errores por stack.
@@ -176,9 +255,9 @@ actualizarErrores proc
   add dl, 30h
   call imprimirCaracter
 
-  pop dx
-  pop bx
-  pop bp
+    pop dx
+    pop bx
+    pop bp
   ret 2
 actualizarErrores endp
 end
