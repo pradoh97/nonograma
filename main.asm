@@ -3,13 +3,14 @@
 .stack 100h
 .data
   nroNivel          db "" ;es el caracter 23° de la linea de cantidad de errores.
-  cantidadErrores   db ""
+  cantidadErrores   db 0
   pistaColumna      db "0 3 2 3 0", 24h
   pistaFila         db "03230", 24h
   origenPistasX     db ""
   origenPistasY     db ""
 .code
 extrn mostrarMenu:proc
+extrn actualizarErrores:proc
 ; extrn nivel1:proc
 ; extrn nivel2:proc
 ; extrn nivel3:proc
@@ -26,6 +27,9 @@ main proc
   ;Y EL MODO 3
 
 inicio:
+  ;Vuelve a poner en cero la cantidad de errores.
+  mov cantidadErrores, 0
+
   call limpiarPantalla
   call mostrarMenu
 
@@ -49,36 +53,35 @@ opciones:
   je fin
 
   jmp opciones  ;SI ES CUALQUIER OTRA TECLA VUELVE A PEDIR UNA VALIDA
-nivel1:
-  ;call nivel1
-  ;paso nro nivel
-  mov ax, 1h
-  push ax
 
-  lea ax, pistaColumna
-  push ax
+  nivel1:
+    ;Número nivel
+    push 1
 
-  lea ax, pistaFila
-  push ax
+    ;Pistas
+    lea dx, pistaColumna
+    push dx
+    lea dx, pistaFila
+    push dx
 
-  ;paso origen x
-  mov ax, 25
-  push ax
+    ;Coordenadas de origen en X y después Y
+    push 25
+    push 1
 
-  ;paso origen y
-  mov ax, 1
-  push ax
+    ;Cantidad de filas y columnas
+    push 5
+    push 5
 
-  ;paso cant fil y column
-  mov ax, 5
-  push ax
-  mov ax, 5
-  push ax
+    call limpiarPantalla
+    call hud
 
-  call limpiarPantalla
-  call hud
+    mov ah, 01h
+    int 21h
 
-  jmp fin
+    push 1
+    call actualizarErrores
+
+    jmp fin
 
 nivel2:
   ; call nivel2
