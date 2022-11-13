@@ -13,6 +13,7 @@
   pistaFila         db ""
   cursorX           db 0
   cursorY           db 0
+  controles         db "Usa W-A-S-D para moverte y ESPACIO para seleccionar. Si deseas volver al menu principal presiona ESC.", 24h
 
 .code
 extrn imprimir:proc
@@ -35,12 +36,12 @@ hud proc
   ;								-CUADRADOS A PINTAR (pistaColumna y pistaFila)
   salvarRegistros:
     push bp
+    mov bp, sp
+
     push dx
     push cx
     push bx
     push ax
-
-  mov bp, sp
 
   cargarDesdeStack:
     ;EN TODAS ESTAS, TENIA QUE INDICAR SI ES BYTE O NO?
@@ -85,9 +86,20 @@ hud proc
     mov dl, nroNivel
     int 21h
 
-  imprimirErrores:
+    imprimirControles:
     mov cursorX, 1
     mov cursorY, 24
+
+    mov dh, cursorY
+    mov dl, cursorX
+    call cursor
+
+    lea dx, controles
+    call imprimir
+
+  imprimirErrores:
+    mov cursorX, 1
+    mov cursorY, 4
 
     mov dh, cursorY 		    ;COORDENADA DE FILA
     mov dl, cursorX		      ;COORDENADA DE COLUMNA
@@ -105,6 +117,7 @@ hud proc
   mov bx, 0
   mov cursorX, 35
   mov cursorY, 10
+
 
   imprimirPistasFilas:
     mov dh, cursorY 		   ;COORDENADA DE FILA
