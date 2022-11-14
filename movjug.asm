@@ -8,8 +8,8 @@
   posicionJugadorY  db 0
   origenGrillaX     db 0
   origenGrillaY     db 0
-  vectorJugada      db 0
-  columna           db 0
+  vectorJugada      db "0111010101101111000101110", 24h
+  error             db 30h
   fila              db 0
   nrodefilas        db 0
 
@@ -19,7 +19,7 @@
 ; - Derecho
 ; - Izquierdo
 ; - Superior
-
+extrn pintar:proc
 extrn cursor:proc
 extrn imprimirCaracter:proc
 public movimientoJugador
@@ -46,8 +46,7 @@ movimientoJugador proc
     mov dl, ss:[bp+10]
     mov limiteInferior, dl
 
-    mov dl, ss:[bp+12]
-    mov vectorJugada, dl
+    mov si, ss:[bp+12]
 
     mov dl, ss:[bp+14]
     mov fila, dl
@@ -72,7 +71,7 @@ movimientoJugador proc
     je derecha
 
     cmp al, 20h
-    je comparoVec
+    je intermedio
 
     cmp al, 27
     je salirNivel
@@ -124,56 +123,8 @@ movimientoJugador proc
     jmp tecla
 
   ;cambiar por respuesta erroneo.
-  comparoVec:
-
-  ;bx si posicion y = origenGrillaY entonces resto origenGrillaX
-  ;si posicionJugadorY = origenGrillaY+1 entonces resto origenGrillaX + cantidad columnas
-  ;si posicionJugadorY = origenGrillaY+2 entonces resto origenGrillaX + cantidadFilas *2
-    ; mov al, origenGrillaY
-    ; mov ah, posicionJugadorY
-    ; cmp ah, al
-    ; je Fila1
-    ; inc al
-    ; cmp ah, al
-    ; je Fila2
-    ; inc
-    ;
-    ; Fila1:
-    ; sub ah, al
-    ; mov bx, ah
-    ; jmp comparacion
-
-    ;bx=nrodefilas*(fila-origenGrillaY)+(columna-orgenGrillaX)
-
-    mov dl, origenGrillaY
-    mov dh, posicionJugadorY
-    sub dh,  dl
-    mov ax, nrodefilas
-    mul dh
-    mov bx, ax
-    mov dl, origenGrillaX
-    mov dh, posicionJugadorX
-    sub dh, dl
-
-    add bl, dh
-
-    cmp vectorJugada[bx], 1
-    je Acierto
-    jmp Error
-
-  Acierto:
-    mov al, 219
-    mov bl, 9h
-    mov cx, 2
-    call pintar
-
-  Error:
-    mov al, 219
-    mov bl, 9h
-    mov cx, 2
-    call pintar
-
-
+  intermedio:
+    jmp comparoVec
 
   salirNivel:
     jmp restaurarRegistros
@@ -202,6 +153,60 @@ movimientoJugador proc
     mov dl, posicionJugadorX
     call cursor
   jmp tecla
+
+  comparoVec:
+;bx= nrofilas*(posicionJugadorY)
+  mov dl, origenGrillaY
+  mov dh, posicionJugadorY
+  sub dh, dl
+  mov ax, 5
+  mul dh
+  mov bx, ax
+  mov dl, origenGrillaX
+  mov dh, posicionJugadorX
+  sub dh, dl
+
+  add bl, dh
+  mov bh, 0
+
+  cmp vectorJugada[bx], 31h
+  je Acierto
+  jmp Error
+
+  Acierto:
+  mov al, 219
+  mov bl, 9h
+  mov cx, 2
+  call pintar
+  mov vectorJugada[bx], 32h
+  jmp jump tecla
+
+  Error:
+  mov al, "X"
+  mov bl, 4h
+  mov cx, 2
+  call pintar
+  mov vectorJugada[bx], 33h
+
+  inc error
+  cmp error, 34h
+  je GameOver
+
+  mov dh, 3 		    ;COORDENADA DE FILA
+  mov dl, 23		      ;COORDENADA DE COLUMNA
+  call cursor
+
+  mov al, error
+  mov bl, 4h
+  mov cx, 2
+  call pintar
+
+  mov dh, posicionJugadorY 		    ;COORDENADA DE FILA
+  mov dl, posicionJugadorX		      ;COORDENADA DE COLUMNA
+  call cursor
+    
+  jmp tecla
+
 
   restaurarRegistros:
     pop di

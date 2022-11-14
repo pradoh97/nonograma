@@ -8,6 +8,7 @@ public imprimir
 public cursor
 public limpiarPantalla
 public imprimirCaracter
+public pintar
 
 ;Recibe el offset de lo que se va a imprimr por el registro DX
 imprimir proc
@@ -42,4 +43,13 @@ limpiarPantalla proc
 	pop ax
 	ret
 limpiarPantalla endp
+
+;Esta función cambia un caracter en la posición actual para agregar color si así se desea
+pintar proc
+	mov ah, 09h
+	mov bh, 0h
+	mov cx, 2
+	int 10h
+	ret
+pintar endp
 end

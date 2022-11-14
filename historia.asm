@@ -3,7 +3,7 @@
 .stack 100h
 .data
 
-titulo 	db	"historia DEL NONOGRAM", 24h
+titulo 	db	"HISTORIA DEL NONOGRAM", 24h
 re1			db 	"En 1987, Non Ishida, un editor de graficos japones, gano una competencia en", 0dh, 0ah
 				db	"Tokio por la creacion de imagenes en cuadricula usando luces de rascacielos", 0dh, 0ah
 				db	"que eran encendidas y apagadas. Casualmente, un desarrollador de rompecabezas", 0dh, 0ah
