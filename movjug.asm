@@ -19,12 +19,14 @@
 ; - Derecho
 ; - Izquierdo
 ; - Superior
+extrn actualizarErrores:proc
+extrn over:proc
 extrn pintar:proc
 extrn cursor:proc
 extrn imprimirCaracter:proc
 public movimientoJugador
 movimientoJugador proc
-
+  mov error, 30h
   salvarRegistros:
     push bp
     mov bp, sp
@@ -155,23 +157,60 @@ movimientoJugador proc
   jmp tecla
 
   comparoVec:
-;bx= nrofilas*(posicionJugadorY)
-  mov dl, origenGrillaY
-  mov dh, posicionJugadorY
-  sub dh, dl
-  mov ax, 5
-  mul dh
-  mov bx, ax
-  mov dl, origenGrillaX
-  mov dh, posicionJugadorX
-  sub dh, dl
+    ;bx= nrofilas*(posicionJugadorY-origenGrillaY)+(posicionJugadorX-origenGrillaX)/2
+    mov dh, posicionJugadorY
+    sub dh, origenGrillaY
 
-  add bl, dh
-  mov bh, 0
+    ;Nro filas
+    mov ax, 5
 
-  cmp vectorJugada[bx], 31h
-  je Acierto
-  jmp Error
+    ;Multiplica al por dh
+    mul dh
+    mov bx, ax
+
+  ;  dec dl
+    mov dh, posicionJugadorX
+    sub dh, origenGrillaX
+    shr dh, 1
+
+    add bl, dh
+    mov bh, 0
+    mov ax, bx
+    
+    mov bl, al
+    mov bh, 0
+
+    ;Pos vector
+    mov dl, 0
+    mov dh, 20
+    call cursor
+
+    mov dl, bl
+    call imprimirCaracter
+
+    ;Pos X
+    mov dl, 10
+    mov dh, 20
+    call cursor
+
+    mov dl, posicionJugadorX
+    call imprimirCaracter
+
+    ;Pos Y
+    mov dl, 20
+    mov dh, 20
+    call cursor
+
+    mov dl, posicionJugadorY
+    call imprimirCaracter
+
+    mov dh, posicionJugadorY
+    mov dl, posicionJugadorX
+    call cursor
+
+    cmp vectorJugada[bx], 31h
+    je Acierto
+    jmp Error1
 
   Acierto:
   mov al, 219
@@ -179,34 +218,31 @@ movimientoJugador proc
   mov cx, 2
   call pintar
   mov vectorJugada[bx], 32h
-  jmp jump tecla
-
-  Error:
-  mov al, "X"
-  mov bl, 4h
-  mov cx, 2
-  call pintar
-  mov vectorJugada[bx], 33h
-
-  inc error
-  cmp error, 34h
-  je GameOver
-
-  mov dh, 3 		    ;COORDENADA DE FILA
-  mov dl, 23		      ;COORDENADA DE COLUMNA
-  call cursor
-
-  mov al, error
-  mov bl, 4h
-  mov cx, 2
-  call pintar
-
-  mov dh, posicionJugadorY 		    ;COORDENADA DE FILA
-  mov dl, posicionJugadorX		      ;COORDENADA DE COLUMNA
-  call cursor
-    
   jmp tecla
 
+  Error1:
+    mov al, "X"
+    mov bl, 4h
+    mov cx, 2
+    call pintar
+    mov vectorJugada[bx], 33h
+
+    inc error
+    cmp error, 34h
+    je GameOver
+
+    mov dl, error
+    push dx
+    call actualizarErrores
+
+    mov dl, posicionJugadorX
+    mov dh, posicionJugadorY
+    call cursor
+
+    jmp tecla
+
+  GameOver:
+    call over
 
   restaurarRegistros:
     pop di

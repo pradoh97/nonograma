@@ -252,12 +252,12 @@ actualizarErrores proc
   call cursor
 
   mov dl, ss:[bp+4]
-  add dl, 30h
   call imprimirCaracter
 
     pop dx
     pop bx
     pop bp
+
   ret 2
 actualizarErrores endp
 end

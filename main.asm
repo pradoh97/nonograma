@@ -2,7 +2,6 @@
 .model small
 .stack 100h
 .data
-  cantidadErrores   db 0
   cantidadAciertos  db 0
   limiteX           db 0
   limiteY           db 0
@@ -31,8 +30,6 @@ main proc
 
 inicio:
   ;Vuelve a poner en cero la cantidad de errores.
-  mov cantidadErrores, 0
-
   call limpiarPantalla
   call mostrarMenu
 

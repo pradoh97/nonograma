@@ -4,7 +4,7 @@
 .data
 	posCartelX db 10             ;MODIFICAR
 	posCartelY db 2              ;MODIFICAR
-	texto db 'Pulse enter para empezar denuevo o alguna boludes si kieren', 0dh,0ah,24h  ;MODIFICAR
+	texto db 'Pulse Enter para empezar de nuevo.', 0dh,0ah,24h  ;MODIFICAR
 	borde db 50 dup (176),0dh,0ah,24h
 	game1 db 176,176,176,176,219,219,176,176,219,219,176,176,176,176,176,176,219,219,219,219,219,219,176,176,176,176,219,219,176,176,'XX',176,176,219,219,176,176,219,219,219,219,219,219,219,219,219,219,176,176,0dh,0ah,24h
 	game2 db 176,176,219,219,176,176,176,176,176,176,176,176,176,176,219,219,176,176,176,176,176,176,219,219,176,176,219,219,219,219,176,176,219,219,219,219,176,176,176,176,'XX',176,176,176,176,176,176,176,176,0dh,0ah,24h
@@ -17,12 +17,14 @@
 	over4 db 176,176,219,219,176,176,176,176,176,176,219,219,176,176,176,176,219,219,176,176,219,219,176,176,176,176,219,219,176,176,176,176,176,176,176,176,176,176,176,176,176,176,176,176,176,176,219,219,'XX',0dh,0ah,24h
 	over5 db 176,176,176,176,219,219,176,176,219,219,176,176,176,176,176,176,176,176,219,219,176,176,'XX',176,176,219,219,219,219,219,219,219,219,219,219,176,176,219,219,176,176,176,176,176,176,219,219,176,176,0dh,0ah,24h
 .code
-	main proc
-		mov ax,@data
+public over
+
+	over proc
+		mov ax, @data
 		mov ds, ax
 
-		mov ah, 2h		;posicion inicial del cartel
-		mov bh, 0 		;misma página
+		mov ah, 2h										;posicion inicial del cartel
+		mov bh, 0 										;misma página
 		mov dh, posCartelY
  		mov dl, posCartelx
  		int 10h
@@ -163,7 +165,6 @@
 		mov dx, offset texto
 		int 21h
 	;---------------------------------------------------
-		mov ah, 4ch
-		int 21h
-	main endp
+	ret
+	over endp
 end

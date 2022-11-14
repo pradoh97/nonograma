@@ -13,7 +13,7 @@
   t5  db 219,20h,20h,20h,219,219,20h,20h,219,219,219,219,20h,20h,219,20h,20h,20h,219,219,20h,20h,219,219,219,219,20h,20h,219,219,219,219,219,219,20h,20h,219,20h,20h,20h,20h,219,20h,20h,219,20h,20h,20h,219,20h,20h,219,20h,20h,20h,20h,219, 24h
   t66 db "SISTEMAS DE PROCESAMIENTO DE DATOS 2022", 24h
 
-  t76 db " Si desea juegar en modo FACIL presione 1.", 0dh,0ah
+  t76 db "Si desea juegar en modo FACIL presione 1.", 0dh,0ah
       db " Si desea juegar en modo INTERMEDIO presione 2.", 0dh,0ah
       db " Si desea juegar en modo DIFICIL presione 3.", 0dh,0ah
       db " Si desea saber sobre la historia del juego presione 4.", 0dh, 0ah
