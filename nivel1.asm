@@ -4,8 +4,8 @@
 .data
   pistaColumna          db "   1  131 31113"
   pistaFila             db " 1    111 31313"
-  vectorSolucion        db "0111010001101111000101110", 24h
-  vectorJugada          db "0111010001101111000101110", 24h
+  vectorSolucion        db "0111010101101111000101110", 24h
+  vectorJugada          db "0111010101101111000101110", 24h
   cantidadPistasFila    db 3
   cantidadPistasColumna db 3
   nroNivel              db 1 ;es el caracter 23° de la linea de cantidad de errores.
@@ -54,6 +54,10 @@ nivel1 proc
   call vec
 
   call hud
+
+  lea dx, vectorJugada
+  mov al, cantidadFilas
+
   ret
 nivel1 endp
 end

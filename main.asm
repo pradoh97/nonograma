@@ -61,6 +61,8 @@ empezarNivel1:
     call limpiarPantalla
     call nivel1
 
+    push ax; en al esta la cantidad de filas
+    push dx; esta el vector solucion
     ;Límite inferior
     push 15
     ;Límite derecho

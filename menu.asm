@@ -18,8 +18,8 @@
       db " Si desea juegar en modo DIFICIL presione 3.", 0dh,0ah
       db " Si desea saber sobre la historia del juego presione 4.", 24h
 
-  nombres db "Hernan Prado - Tamara Mecozi - Gabriel Tarquini", 0dh, 0ah
-          db "                    Agustina Venanzoni - Guillermo Carbone", 24h
+  nombres db "Hernan Prado - Gabriel Tarquini", 0dh, 0ah
+          db " Guillermo Carbone - Agustina Venanzoni", 24h
   u1      db 201,205,205,205,242,242,242,242,242,205,205,205,187,24h
   u2      db 186,20h,20h,20h,20h,20h,20h,20h,20h,20h,20h,20h,186,20h, "Universidad Nacional", 24h
   u3      db 186,20h,20h,20h,20h,20h,20h,20h,20h,20h,20h,20h,186,20h,20h,20h,20h,20h,"de San Martin", 24h

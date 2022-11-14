@@ -8,6 +8,11 @@
   posicionJugadorY  db 0
   origenGrillaX     db 0
   origenGrillaY     db 0
+  vectorJugada      db 0
+  columna           db 0
+  fila              db 0
+  nrodefilas        db 0
+
 .code
 ;Recibe por stack los límites de la matriz de movimiento en el siguiente orden:
 ; - Inferior
@@ -40,6 +45,12 @@ movimientoJugador proc
     mov limiteDerecho, dl
     mov dl, ss:[bp+10]
     mov limiteInferior, dl
+
+    mov dl, ss:[bp+12]
+    mov vectorJugada, dl
+
+    mov dl, ss:[bp+14]
+    mov fila, dl
 
   ;Movimiento o seleccion de casillero.
   tecla:
@@ -114,13 +125,56 @@ movimientoJugador proc
 
   ;cambiar por respuesta erroneo.
   comparoVec:
-    mov ah, 09h
+
+  ;bx si posicion y = origenGrillaY entonces resto origenGrillaX
+  ;si posicionJugadorY = origenGrillaY+1 entonces resto origenGrillaX + cantidad columnas
+  ;si posicionJugadorY = origenGrillaY+2 entonces resto origenGrillaX + cantidadFilas *2
+    ; mov al, origenGrillaY
+    ; mov ah, posicionJugadorY
+    ; cmp ah, al
+    ; je Fila1
+    ; inc al
+    ; cmp ah, al
+    ; je Fila2
+    ; inc
+    ;
+    ; Fila1:
+    ; sub ah, al
+    ; mov bx, ah
+    ; jmp comparacion
+
+    ;bx=nrodefilas*(fila-origenGrillaY)+(columna-orgenGrillaX)
+
+    mov dl, origenGrillaY
+    mov dh, posicionJugadorY
+    sub dh,  dl
+    mov ax, nrodefilas
+    mul dh
+    mov bx, ax
+    mov dl, origenGrillaX
+    mov dh, posicionJugadorX
+    sub dh, dl
+
+    add bl, dh
+
+    cmp vectorJugada[bx], 1
+    je Acierto
+    jmp Error
+
+  Acierto:
     mov al, 219
-    mov bh, 0h
-    mov bl, 4h
-    mov cx, 1
-    int 10h
-    
+    mov bl, 9h
+    mov cx, 2
+    call pintar
+
+  Error:
+    mov al, 219
+    mov bl, 9h
+    mov cx, 2
+    call pintar
+
+
+
   salirNivel:
     jmp restaurarRegistros
 
