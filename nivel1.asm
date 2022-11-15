@@ -47,13 +47,14 @@ nivel1 proc
   mov al, cantidadColumnas
   push ax
 
+
+  call hud
+
   lea dx, vectorSolucion
   push dx
   lea dx, vectorJugada
   push dx
   call vec
-
-  call hud
 
   lea dx, vectorJugada
   mov al, cantidadFilas
