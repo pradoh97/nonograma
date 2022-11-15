@@ -2,9 +2,9 @@
 .model small
 .stack 100h
 .data
-	posCartelX db 10             ;MODIFICAR
-	posCartelY db 2              ;MODIFICAR
-	texto db 'Pulse Enter para empezar de nuevo.', 0dh,0ah,24h  ;MODIFICAR
+	posCartelX db 15             ;MODIFICAR
+	posCartelY db 4             ;MODIFICAR
+	texto db 'Pulse Enter para volver al menu.', 0dh,0ah,24h  ;MODIFICAR
 	borde db 50 dup (176),0dh,0ah,24h
 	game1 db 176,176,176,176,219,219,176,176,219,219,176,176,176,176,176,176,219,219,219,219,219,219,176,176,176,176,219,219,176,176,'XX',176,176,219,219,176,176,219,219,219,219,219,219,219,219,219,219,176,176,0dh,0ah,24h
 	game2 db 176,176,219,219,176,176,176,176,176,176,176,176,176,176,219,219,176,176,176,176,176,176,219,219,176,176,219,219,219,219,176,176,219,219,219,219,176,176,176,176,'XX',176,176,176,176,176,176,176,176,0dh,0ah,24h
@@ -18,10 +18,10 @@
 	over5 db 176,176,176,176,219,219,176,176,219,219,176,176,176,176,176,176,176,176,219,219,176,176,'XX',176,176,219,219,219,219,219,219,219,219,219,219,176,176,219,219,176,176,176,176,176,176,219,219,176,176,0dh,0ah,24h
 .code
 public over
+	extrn limpiarPantalla:proc
 
 	over proc
-		mov ax, @data
-		mov ds, ax
+		call limpiarPantalla
 
 		mov ah, 2h										;posicion inicial del cartel
 		mov bh, 0 										;misma página
@@ -165,6 +165,14 @@ public over
 		mov dx, offset texto
 		int 21h
 	;---------------------------------------------------
+
+	leerTecla:
+		mov ah, 08h
+		int 21h
+
+		cmp al, 0dh
+	jne leerTecla
+
 	ret
 	over endp
 end
