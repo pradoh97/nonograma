@@ -56,6 +56,8 @@ movimientoJugador proc
 
   ;Cuenta cuantos aciertos hay en un nivel.
   mov di, offsetVectorJugada
+  mov cantidadAciertos, 0
+  mov cantidadAciertosJugador, 0
   contarAciertosEnNivel:
     cmp byte ptr[di], 24h
     je tecla
