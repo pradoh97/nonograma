@@ -21,10 +21,10 @@ vec proc
 
   carga:
     mov al, [bx]
-    mov byte [si], al
+    mov byte ptr[si], al
     inc si
     inc bx
-    cmp byte ptr [bx], 24h
+    cmp byte ptr[bx], 24h
     je finCarga
     jmp carga
 
