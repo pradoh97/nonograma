@@ -26,10 +26,13 @@ imprimirCaracter endp
 
 ;Recibe en dh la coordenada y, en dl la coordenada x a donde posicionar el cursor.
 cursor proc
+	push bx
+
   mov ah, 2		       ;POSICIONAMOS EL CURSOR
   mov bh, 0 		     ;PAGINA SIEMPRE LA MISMA
   int 10h
 
+	pop bx
   ret
 cursor endp
 
