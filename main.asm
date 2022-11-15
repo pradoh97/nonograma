@@ -59,7 +59,8 @@ empezarNivel1:
     call nivel1
 
     push ax; en al esta la cantidad de filas
-    push dx; esta el vector solucion
+
+    push dx; esta el vector jugada
     ;Límite inferior
     push 15
     ;Límite derecho
