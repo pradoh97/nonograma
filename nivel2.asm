@@ -3,14 +3,12 @@
 .stack 100h
 .data
   pistaColumna          db " 41114 3233423"
-                           ;111111.222222.
   pistaFila             db "    1   11 3 15127171"
-                           ;111111.222222.333333.
-  vectorSolucion        db "0111110010001001001101111111101100177777770100010",24h
-                           ;1------2------3------4------5------6------7------
+  vectorSolucion        db "0111110010001001001101111111101100111111110100010",24h
+  vectorJugada          db "0111110010001001001101111111101100111111110100010",24h
   cantidadPistasFila    db 3
   cantidadPistasColumna db 2
-  nroNivel              db 2 ;es el caracter 23° de la linea de cantidad de errores.
+  nroNivel              db 2
   origenGrillaX         db 36
   origenGrillaY         db 11
   cantidadFilas         db 7
@@ -56,6 +54,13 @@ nivel2 proc
   lea dx, vectorJugada
   push dx
   call vec
+
+  lea dx, vectorJugada
+  mov al, cantidadFilas
+  mov ah, cantidadColumnas
+
+  mov bl, origenGrillaX
+  mov bh, origenGrillaY
 
   ret
 nivel2 endp

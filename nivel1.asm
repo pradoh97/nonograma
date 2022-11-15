@@ -8,7 +8,7 @@
   vectorJugada          db "0111010101101111000101110", 24h
   cantidadPistasFila    db 3
   cantidadPistasColumna db 3
-  nroNivel              db 1                                    ;es el caracter 23° de la linea de cantidad de errores.
+  nroNivel              db 1
   origenGrillaX         db 36
   origenGrillaY         db 11
   cantidadFilas         db 5
@@ -47,7 +47,6 @@ nivel1 proc
   mov al, cantidadColumnas
   push ax
 
-
   call hud
 
   lea dx, vectorSolucion
@@ -58,6 +57,10 @@ nivel1 proc
 
   lea dx, vectorJugada
   mov al, cantidadFilas
+  mov ah, cantidadColumnas
+
+  mov bl, origenGrillaX
+  mov bh, origenGrillaY
 
   ret
 nivel1 endp

@@ -3,14 +3,12 @@
 .stack 100h
 .data
   pistaColumna          db " 1        121  11   4217164   2141811213"
-                           ;111111111.222222222.333333333.444444444.
   pistaFila             db "   2 1  1 3  415  1 3151717517"
-                           ;111111111.222222222.333333333.
   vectorSolucion        db "1110111000000100000001111100001101111001100111111110011111011111111000011111000010101000001111111000",24h
-                           ;1---------2---------3---------4---------5---------6---------7---------8---------9---------10--------
+  vectorJugada          db "1110111000000100000001111100001101111001100111111110011111011111111000011111000010101000001111111000",24h
   cantidadPistasFila    db 3
   cantidadPistasColumna db 4
-  nroNivel              db 3 ;es el caracter 23° de la linea de cantidad de errores.
+  nroNivel              db 3
   origenGrillaX         db 36
   origenGrillaY         db 11
   cantidadFilas         db 10
@@ -19,8 +17,8 @@
 .code
   extrn hud:proc
   extrn vec:proc
-  public nivel2
-  nivel2 proc
+  public nivel3
+  nivel3 proc
     ;Número nivel
     mov al, nroNivel
     push ax
@@ -57,6 +55,13 @@
     push dx
     call vec
 
+    lea dx, vectorJugada
+    mov al, cantidadFilas
+    mov ah, cantidadColumnas
+
+    mov bl, origenGrillaX
+    mov bh, origenGrillaY
+
     ret
-  nivel2 endp
+  nivel3 endp
 end
