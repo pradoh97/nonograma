@@ -181,7 +181,7 @@ hud proc
       mov dl, cursorX
       call cursor
 
-      mov si, pistaFila
+      mov si, pistaColumna
       mov dl, byte ptr[si+bx]	;IMPRIMIMOS LAS PISTAS QUE REFIEREN A LAS FILAS
       call imprimirCaracter
       inc bx
