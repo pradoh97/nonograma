@@ -8,17 +8,19 @@
   posicionJugadorY  db 0
   origenGrillaX     db 0
   origenGrillaY     db 0
-  vectorJugada      db "0111010101101111000101110", 24h
-  error             db 30h
-  fila              db 0
+  offsetVectorJugada dw 0
+  cantidadErrores    db 30h
+  cantidadFilas     db 0
   nrodefilas        db 0
-
+  cantidadAciertos  db 0 ;Los aciertos totales de un nivel.
+  cantidadAciertosJugador  db 0 ;Los aciertos que hizo el jugador.
 .code
 ;Recibe por stack los límites de la matriz de movimiento en el siguiente orden:
 ; - Inferior
 ; - Derecho
 ; - Izquierdo
 ; - Superior
+;Recibe vector jugada
 extrn actualizarErrores:proc
 extrn over:proc
 extrn pintar:proc
@@ -26,7 +28,7 @@ extrn cursor:proc
 extrn imprimirCaracter:proc
 public movimientoJugador
 movimientoJugador proc
-  mov error, 30h
+  mov cantidadErrores, 30h
   salvarRegistros:
     push bp
     mov bp, sp
@@ -34,7 +36,6 @@ movimientoJugador proc
     push bx
     push dx
     push di
-
   cargarDesdeStack:
     ;Rescato los límites para el jugador.
     mov dl, ss:[bp+4]
@@ -48,10 +49,26 @@ movimientoJugador proc
     mov dl, ss:[bp+10]
     mov limiteInferior, dl
 
-    mov si, ss:[bp+12]
-
+    mov bx, ss:[bp+12]
+    mov offsetVectorJugada, bx
     mov dl, ss:[bp+14]
-    mov fila, dl
+    mov cantidadFilas, dl
+
+  ;Cuenta cuantos aciertos hay en un nivel.
+  mov di, offsetVectorJugada
+  contarAciertosEnNivel:
+    cmp byte ptr[di], 24h
+    je tecla
+
+    cmp byte ptr[di], "1"
+    je sumaAciertoEnNivel
+    inc di
+    jmp contarAciertosEnNivel
+
+    sumaAciertoEnNivel:
+      inc di
+      inc cantidadAciertos
+  jmp contarAciertosEnNivel
 
   ;Movimiento o seleccion de casillero.
   tecla:
@@ -84,7 +101,7 @@ movimientoJugador proc
   abajo:
     mov al, posicionJugadorY
     cmp al, limiteInferior
-    je volverArriba
+    jae volverArriba
     inc posicionJugadorY
     mov dh, posicionJugadorY
     mov dl, posicionJugadorX
@@ -95,7 +112,7 @@ movimientoJugador proc
   arriba:
     mov al, posicionJugadorY
     cmp al, origenGrillaY
-    je volverAbajo
+    jbe volverAbajo
     dec posicionJugadorY
     mov dh, posicionJugadorY
     mov dl, posicionJugadorX
@@ -152,23 +169,29 @@ movimientoJugador proc
   volverDerecha:
     mov dl, limiteDerecho
     mov posicionJugadorX, dl
-    mov dl, posicionJugadorX
+    mov dh, posicionJugadorY
     call cursor
-  jmp tecla
+  teclaIntermedio:
+    jmp tecla
 
   comparoVec:
+    ;Para asegurarnos
+    xor dx, dx
+    ;Para asegurarnos
+    xor ax, ax
     ;bx= nrofilas*(posicionJugadorY-origenGrillaY)+(posicionJugadorX-origenGrillaX)/2
     mov dh, posicionJugadorY
     sub dh, origenGrillaY
 
     ;Nro filas
-    mov ax, 5
+    mov ah, 0
+    mov al, cantidadFilas
 
     ;Multiplica al por dh
     mul dh
     mov bx, ax
 
-  ;  dec dl
+    ;dec dl
     mov dh, posicionJugadorX
     sub dh, origenGrillaX
     shr dh, 1
@@ -176,62 +199,44 @@ movimientoJugador proc
     add bl, dh
     mov bh, 0
     mov ax, bx
-    
-    mov bl, al
-    mov bh, 0
 
-    ;Pos vector
-    mov dl, 0
-    mov dh, 20
-    call cursor
+    mov si, offsetVectorJugada
+    add si, bx
+    cmp byte ptr[si], 31h
+    je acierto
+    cmp byte ptr[si], 32h
+    je teclaIntermedio
+    cmp byte ptr[si], 33h
+    je teclaIntermedio
+    jmp error
 
-    mov dl, bl
-    call imprimirCaracter
+  acierto:
+    inc cantidadAciertosJugador
 
-    ;Pos X
-    mov dl, 10
-    mov dh, 20
-    call cursor
+    mov byte ptr[si], 32h
+    mov al, 219
+    mov bl, 9h
+    mov cx, 2
+    call pintar
 
-    mov dl, posicionJugadorX
-    call imprimirCaracter
+    mov al, cantidadAciertos
+    cmp cantidadAciertosJugador, al
+    je gameOver
 
-    ;Pos Y
-    mov dl, 20
-    mov dh, 20
-    call cursor
+    jmp teclaIntermedio
 
-    mov dl, posicionJugadorY
-    call imprimirCaracter
-
-    mov dh, posicionJugadorY
-    mov dl, posicionJugadorX
-    call cursor
-
-    cmp vectorJugada[bx], 31h
-    je Acierto
-    jmp Error1
-
-  Acierto:
-  mov al, 219
-  mov bl, 9h
-  mov cx, 2
-  call pintar
-  mov vectorJugada[bx], 32h
-  jmp tecla
-
-  Error1:
+  error:
+    mov byte ptr[si], 33h
     mov al, "X"
     mov bl, 4h
     mov cx, 2
     call pintar
-    mov vectorJugada[bx], 33h
 
-    inc error
-    cmp error, 34h
-    je GameOver
+    inc cantidadErrores
+    cmp cantidadErrores, 34h
+    je gameOver
 
-    mov dl, error
+    mov dl, cantidadErrores
     push dx
     call actualizarErrores
 
@@ -239,9 +244,9 @@ movimientoJugador proc
     mov dh, posicionJugadorY
     call cursor
 
-    jmp tecla
+    jmp teclaIntermedio
 
-  GameOver:
+  gameOver:
     call over
 
   restaurarRegistros:
@@ -250,6 +255,6 @@ movimientoJugador proc
     pop bx
     pop si
     pop bp
-  ret 8
+  ret 12
 movimientoJugador endp
 end
