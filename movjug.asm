@@ -17,7 +17,7 @@
   cartelWin1                  db 201, 18 dup (205), 187,0dh,0ah,24h
   cartelWin2                  db 186,'Bien hecho Pedro',33,33,186,0dh,0ah,24h
   cartelWin3                  db 200, 18 dup (205), 188,0dh,0ah,24h
-  pulseEnter                  db 'Pulse enter para voler al menu.',0dh,0ah,24h
+  pulseEnter                  db 'Pulse Enter para volver al menu.',0dh,0ah,24h
 
 
 .code
@@ -259,45 +259,36 @@ movimientoJugador proc
     jmp restaurarRegistros
 
   ganaste:
-      mov ah, 2h
-      mov bh, 0
+
       mov dh, 3		                    ;Y
       mov dl, 30		                  ;X
-      int 10h
+      call cursor
 
       mov ah, 9
       mov dx, offset cartelWin1         ;"==========="
       int 21h
 
-      mov ah, 2h
-      mov bh, 0
       mov dh, 4
       mov dl, 30
-      int 10h
+      call cursor
 
       mov ah, 9
       mov dx, offset cartelWin2         ;"Bien hecho Pedro"
       int 21h
 
-      mov ah, 2h
-      mov bh, 0
       mov dh, 5
       mov dl, 30
-      int 10h
+      call cursor
 
       mov ah, 9
       mov dx, offset cartelWin3         ;"==========="
       int 21h
 
-      mov ah, 8h
-      int 21h
+      mov dh, 20
+      mov dl, 15
+      call cursor
 
-
-      mov ah, 2h
-      mov bh, 0
-      mov dh, 22
-      mov dl, 12
-      int 10h
+      ;PARTE DE LA MUSIQUITA
 
       mov cx, 6087
       mov bx, 100
@@ -363,8 +354,6 @@ movimientoJugador proc
       mov bx, 300
       int 80h
 
-      ;--------------
-
       mov cx, 5119
       mov bx, 100
       int 80h
@@ -418,7 +407,6 @@ movimientoJugador proc
       int 21h
       cmp al, 0dh
       jne pedirVolver
-
 
   restaurarRegistros:
     pop di
