@@ -165,8 +165,25 @@ public over
 		mov dx, offset texto
 		int 21h
 	;---------------------------------------------------
+	musicaDerrota:
+		mov cx, 4063
+		mov bx, 400
+		int 80h
+
+		mov cx, 4304
+		mov bx, 400
+		int 80h
+
+		mov cx, 4560
+		mov bx, 400
+		int 80h
+
+		mov cx, 4831
+		mov bx, 650
+		int 80h
 
 	leerTecla:
+
 		mov ah, 08h
 		int 21h
 
