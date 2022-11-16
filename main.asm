@@ -113,17 +113,17 @@ cargarHUD:
 
 gameLoop:
   call movimientoJugador
-jmp inicio
+  jmp inicio
 
 comoJugar:
   call limpiarPantalla
   call instruccion
-  jmp jintermedio1
+  jmp intermedio1
 
 mostrarHistoria:
   call limpiarPantalla
   call historia
-  jmp jintermedio1
+  jmp intermedio1
 fin:
   call limpiarPantalla
 
