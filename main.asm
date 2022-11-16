@@ -45,6 +45,9 @@ opciones:
   je cargarMetadatosNivel3
 
   cmp al, "4"                 ;SI ES CUATRO VA A LA HISTORIA DEL JUEGO
+  je instrucciones
+
+  cmp al, "5"                 ;SI ES CUATRO VA A LA HISTORIA DEL JUEGO
   je mostrarHistoria
 
   cmp al, 27
@@ -101,6 +104,10 @@ cargarHUD:
 gameLoop:
   call movimientoJugador
 jmp inicio
+
+comoJugar:
+  call instrucciones
+  jmp inicio
 
 mostrarHistoria:
   call limpiarPantalla

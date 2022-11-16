@@ -13,13 +13,14 @@
   t5  db 219,20h,20h,20h,219,219,20h,20h,219,219,219,219,20h,20h,219,20h,20h,20h,219,219,20h,20h,219,219,219,219,20h,20h,219,219,219,219,219,219,20h,20h,219,20h,20h,20h,20h,219,20h,20h,219,20h,20h,20h,219,20h,20h,219,20h,20h,20h,20h,219, 24h
   t66 db "SISTEMAS DE PROCESAMIENTO DE DATOS 2022", 24h
 
-  t76 db "Si desea juegar en modo FACIL presione 1.", 0dh,0ah
-      db " Si desea juegar en modo INTERMEDIO presione 2.", 0dh,0ah
-      db " Si desea juegar en modo DIFICIL presione 3.", 0dh,0ah
-      db " Si desea saber sobre la historia del juego presione 4.", 0dh, 0ah
-      db " Si desea salir del juego, presione ESC.", 24h
+  t76 db "Si desea juegar en modo FACIL, presione 1.", 0dh,0ah
+      db " Si desea juegar en modo INTERMEDIO, presione 2.", 0dh,0ah
+      db " Si desea juegar en modo DIFICIL, presione 3.", 0dh,0ah
+      db " Si desea saber COMO JUGAR, presione 4.", 0dh, 0ah
+      db " Si desea saber sobre la HISTORIA del juego, presione 5.", 0dh, 0ah
+      db " Si desea SALIR del juego, presione ESC.", 24h
 
-  nombres db "Hernan Prado - Gabriel Tarquini - Guillermo Carbone - Agustina Venanzoni", 24h
+  nombres db "  Hernan Prado - Gabriel Tarquini - Guillermo Carbone - Agustina Venanzoni", 24h
 
   u1      db 201,205,205,205,242,242,242,242,242,205,205,205,187,24h
   u2      db 186,20h,20h,20h,20h,20h,20h,20h,20h,20h,20h,20h,186,20h, "Universidad Nacional", 24h
@@ -93,7 +94,7 @@ mostrarMenu proc
       call imprimir
 
     imprimirOpciones:
-      mov cursorY, 11
+      mov cursorY, 10
       mov cursorX, 1
 
       mov dh, cursorY 		    ;COORDENADA DE FILA
