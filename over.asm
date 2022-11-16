@@ -17,9 +17,11 @@
 	over4 db 176,176,219,219,176,176,176,176,176,176,219,219,176,176,176,176,219,219,176,176,219,219,176,176,176,176,219,219,176,176,176,176,176,176,176,176,176,176,176,176,176,176,176,176,176,176,219,219,'XX',0dh,0ah,24h
 	over5 db 176,176,176,176,219,219,176,176,219,219,176,176,176,176,176,176,176,176,219,219,176,176,'XX',176,176,219,219,219,219,219,219,219,219,219,219,176,176,219,219,176,176,176,176,176,176,219,219,176,176,0dh,0ah,24h
 .code
-public over
-	extrn limpiarPantalla:proc
 
+	extrn cursor:proc
+	extrn limpiarPantalla:proc
+	extrn musicad:proc
+public over
 	over proc
 		call limpiarPantalla
 
@@ -156,38 +158,23 @@ public over
 		pop dx
 		inc dh
 	;---------------------------------------------------
-		mov ah, 2h
+
 		mov dl, 15
 		mov dh, 20
- 		int 10h
+ 		call cursor
 
 		mov ah,9
 		mov dx, offset texto
 		int 21h
 	;---------------------------------------------------
-	musicaDerrota:
-		mov cx, 4063
-		mov bx, 400
-		int 80h
-
-		mov cx, 4304
-		mov bx, 400
-		int 80h
-
-		mov cx, 4560
-		mov bx, 400
-		int 80h
-
-		mov cx, 4831
-		mov bx, 650
-		int 80h
+		call musicad
 
 	leerTecla:
 
-		mov ah, 08h
-		int 21h
-
+		mov ah, 0
+		int 16h
 		cmp al, 0dh
+
 	jne leerTecla
 
 	ret
