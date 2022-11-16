@@ -284,9 +284,6 @@ movimientoJugador proc
       mov dx, offset cartelWin3         ;"==========="
       int 21h
 
-      mov dh, 20
-      mov dl, 15
-      call cursor
 
       ;PARTE DE LA MUSIQUITA
 
@@ -397,6 +394,10 @@ movimientoJugador proc
       mov cx, 1140
       mov bx, 600
       int 80h
+
+      mov dh, 20
+      mov dl, 15
+      call cursor
 
       mov ah, 9
       mov dx, offset pulseEnter         ;"Presione enter para continuar"
