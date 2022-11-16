@@ -148,7 +148,7 @@ public over
 	;---------------------------------------------------
 
 		mov dl, 25
-		mov dh, 15
+		mov dh, 19
  		call cursor
 
 		lea dx, texto
