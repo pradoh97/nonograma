@@ -15,11 +15,10 @@ i2      db  "-La idea del juego es revelar una imagen oculta.", 0dh, 0ah
 i3			db	"Presione una tecla para regresar al menu principal.", 24h
 
 .code
-
 extrn cursor:proc
 extrn imprimir:proc
-public intruccion
-intruccion proc
+public instruccion
+instruccion proc
 
   push ax
   push dx
@@ -52,5 +51,5 @@ intruccion proc
     pop ax
 
 ret
-intruccion endp
+instruccion endp
 end
