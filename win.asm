@@ -9,10 +9,9 @@
   pulseEnter                  db 'Pulse Enter para volver al menu.',0dh,0ah,24h
 
 .code
-public win:proc
 extrn cursor:proc
 extrn musica:proc
-
+public win:proc
 win proc
 
   push ax
