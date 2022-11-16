@@ -4,8 +4,8 @@
 .data
   pistaColumna          db " 41114 3233423"
   pistaFila             db "    1   11 3 15127171"
-  vectorSolucion        db "0111110010001001001101111111101100111111110100010",24h
-  vectorJugada          db "0111110010001001001101111111101100111111110100010",24h
+  vectorSolucion        db "0111110010001001001101111111101110111111110100010",24h
+  vectorJugada          db "0111110010001001001101111111101110111111110100010",24h
   cantidadPistasFila    db 3
   cantidadPistasColumna db 2
   nroNivel              db 2
