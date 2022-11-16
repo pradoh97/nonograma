@@ -123,5 +123,7 @@ musica proc
   pop cx
   pop bx
 
+  ret
+
 musica endp
 end

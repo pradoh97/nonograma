@@ -46,7 +46,6 @@ win proc
 
 
       ;PARTE DE LA MUSIQUITA
-
       call musica
 
       mov dh, 20
@@ -67,6 +66,6 @@ win proc
   pop bx
   pop cx
   pop dx
-
+ret
 win endp
 end
