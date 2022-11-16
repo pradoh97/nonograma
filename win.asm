@@ -3,10 +3,10 @@
 .stack 100h
 .data
 
-  cartelWin1                  db 201, 18 dup (205), 187,0dh,0ah,24h
-  cartelWin2                  db 186,'Bien hecho Pedro',33,33,186,0dh,0ah,24h
-  cartelWin3                  db 200, 18 dup (205), 188,24h
-  pulseEnter                  db 'Pulse Enter para volver al menu.',24h
+  cartelWin1      db 201, 18 dup (205), 187,0dh,0ah,24h
+  cartelWin2      db 186,'Bien hecho profes',33,186,0dh,0ah,24h
+  cartelWin3      db 200, 18 dup (205), 188,24h
+  pulseEnter      db 'Pulse Enter para volver al menu.',24h
 
 .code
 extrn cursor:proc
