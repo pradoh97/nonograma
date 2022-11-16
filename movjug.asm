@@ -2,18 +2,24 @@
 .model small
 .stack 100h
 .data
-  limiteInferior    db 0
-  limiteDerecho     db 0
-  posicionJugadorX  db 0
-  posicionJugadorY  db 0
-  origenGrillaX     db 0
-  origenGrillaY     db 0
-  offsetVectorJugada dw 0
-  cantidadErrores    db 30h
-  cantidadFilas     db 0
-  nrodefilas        db 0
-  cantidadAciertos  db 0 ;Los aciertos totales de un nivel.
-  cantidadAciertosJugador  db 0 ;Los aciertos que hizo el jugador.
+  limiteInferior              db 0
+  limiteDerecho               db 0
+  posicionJugadorX            db 0
+  posicionJugadorY            db 0
+  origenGrillaX               db 0
+  origenGrillaY               db 0
+  offsetVectorJugada          dw 0
+  cantidadErrores             db 30h
+  cantidadFilas               db 0
+  nrodefilas                  db 0
+  cantidadAciertos            db 0                                              ;Los aciertos totales de un nivel.
+  cantidadAciertosJugador     db 0                                              ;Los aciertos que hizo el jugador.
+  cartelWin1                  db 201, 18 dup (205), 187,0dh,0ah,24h
+  cartelWin2                  db 186,'Bien hecho Pedro',33,33,186,0dh,0ah,24h
+  cartelWin3                  db ''
+  pulseEnter                   db 'Pulse enter para continuar.',0dh,0ah,24h
+
+
 .code
 ;Recibe por stack los límites de la matriz de movimiento en el siguiente orden:
 ; - Inferior
@@ -223,8 +229,8 @@ movimientoJugador proc
 
     mov al, cantidadAciertos
     cmp cantidadAciertosJugador, al
-    je gameOver
-
+    ;je gameOver
+    je ganaste
     jmp teclaIntermedio
 
   error:
@@ -250,6 +256,61 @@ movimientoJugador proc
 
   gameOver:
     call over
+    jmp restaurarRegistros
+
+  ganaste:
+      mov ah, 2h		                    ;Instrucción posición
+      mov bh, 0 		                    ;Misma página (no crea una nueva)
+      mov dh, 21		                    ;Posición Y
+      mov dl, 12		                    ;Posición X
+      int 10h
+
+      mov ah, 9
+      mov dx, offset cartelWin1         ;"==========="
+      int 21h
+
+      mov ah, 2h		                    ;Instrucción posición
+      mov bh, 0 		                    ;Misma página (no crea una nueva)
+      mov dh, 22		                    ;Posición Y
+      mov dl, 12		                    ;Posición X
+      int 10h
+
+      mov ah, 9
+      mov dx, offset cartelWin2         ;"Bien ahi Pedro"
+      int 21h
+
+      mov ah, 2h		                    ;Instrucción posición
+      mov bh, 0 		                    ;Misma página (no crea una nueva)
+      mov dh, 23		                    ;Posición Y
+      mov dl, 12		                    ;Posición X
+      int 10h
+
+      mov ah, 9
+      mov dx, offset cartelWin1         ;"Bien ahi Pedro"
+      int 21h
+
+  pedirVolver1:
+      mov ah, 8h
+      int 21h
+      cmp al, 0dh
+      jne pedirVolver1
+
+      mov ah, 2h		                    ;Instrucción posición
+      mov bh, 0 		                    ;Misma página (no crea una nueva)
+      mov dh, 22 		                    ;Posición Y
+      mov dl, 12		                    ;Posición X
+      int 10h
+
+      mov ah, 9
+      mov dx, offset pulseEnter         ;"Presione enter para continuar"
+      int 21h
+
+    pedirVolver2:
+      mov ah, 8h
+      int 21h
+      cmp al, 0dh
+      jne pedirVolver2
+
 
   restaurarRegistros:
     pop di

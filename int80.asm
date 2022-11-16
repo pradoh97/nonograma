@@ -46,7 +46,7 @@ Funcion PROC FAR
         in  al, 61h
         and al, 11111100b
         out 61h, al
-        
+
     pop bx
     pop cx
     pop ax
@@ -58,7 +58,7 @@ endp
 DespIntXX dw 0
 SegIntXX  dw 0
 
-FinResidente LABEL BYTE		; Marca el fin de la porción a dejar residente
+FinResidente LABEL BYTE		; Marca el fin de la porciï¿½n a dejar residente
 ;------------------------------------------------------------------------
 ; Datos a ser usados por el Instalador
 ;------------------------------------------------------------------------
@@ -71,14 +71,14 @@ main:
     mov ES,ax
 
 InstalarInt:
-    mov AX,3580h        ; Obtiene la ISR que esta instalada en la interrupcion
-    int 21h    
-         
-    mov DespIntXX,BX    
+    mov AX,3580h                          ;Obtiene la ISR que esta instalada en la interrupcion
+    int 21h
+
+    mov DespIntXX,BX
     mov SegIntXX,ES
 
-    mov AX,2580h	; Coloca la nueva ISR en el vector de interrupciones
-    mov DX,Offset Funcion 
+    mov AX,2580h	                        ;Coloca la nueva ISR en el vector de interrupciones
+    mov DX,Offset Funcion
     int 21h
 
 MostrarCartel:
@@ -86,13 +86,13 @@ MostrarCartel:
     mov ah,9
     int 21h
 
-DejarResidente:		
-    Mov     AX,(15+offset FinResidente) 
-    Shr     AX,1            
-    Shr     AX,1        ;Se obtiene la cantidad de paragraphs
+DejarResidente:
+    Mov     AX,(15+offset FinResidente)
     Shr     AX,1
-    Shr     AX,1	;ocupado por el codigo
-    Mov     DX,AX           
-    Mov     AX,3100h    ;y termina sin error 0, dejando el
-    Int     21h         ;programa residente
+    Shr     AX,1                          ;Se obtiene la cantidad de paragraphs
+    Shr     AX,1
+    Shr     AX,1	                        ;ocupado por el codigo
+    Mov     DX,AX
+    Mov     AX,3100h                      ;y termina sin error 0, dejando el
+    Int     21h                           ;programa residente
 end start

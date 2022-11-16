@@ -39,8 +39,8 @@ mostrarMenu proc
       mov cursorX, 10
       mov cursorY, 1
 
-  		mov dh, 1 		    ;COORDENADA DE FILA
-  		mov dl, 10		      ;COORDENADA DE COLUMNA
+  		mov dh, 1 		          ;COORDENADA DE FILA
+  		mov dl, 10		          ;COORDENADA DE COLUMNA
   		call cursor
 
       lea dx, t1

@@ -32,19 +32,19 @@ inicio:
   call mostrarMenu
 
 opciones:
-  mov ah, 0     ;LA INT 16 PIDE UNA TECLA PERO NO LA MUESTRA EN Pantalla
-  int 16h       ;UNA VEZ QUE TENEMOS LA TECLA EN AL LA USAMOS PARA COMPARAR
+  mov ah, 0                   ;LA INT 16 PIDE UNA TECLA PERO NO LA MUESTRA EN Pantalla
+  int 16h                     ;UNA VEZ QUE TENEMOS LA TECLA EN AL LA USAMOS PARA COMPARAR
 
-  cmp al, "1"   ;SI ES 1 VA AL NIVEL 1
+  cmp al, "1"                 ;SI ES 1 VA AL NIVEL 1
   je cargarMetadatosNivel1
 
-  cmp al, "2"   ;SI ES 2 VA AL NIVEL 2
+  cmp al, "2"                 ;SI ES 2 VA AL NIVEL 2
   je cargarMetadatosNivel2
 
-  cmp al, "3"   ;SI ES 3 VA AL NIVEL 3
+  cmp al, "3"                 ;SI ES 3 VA AL NIVEL 3
   je cargarMetadatosNivel3
 
-  cmp al, "4"   ;SI ES CUATRO VA A LA HISTORIA DEL JUEGO
+  cmp al, "4"                 ;SI ES CUATRO VA A LA HISTORIA DEL JUEGO
   je mostrarHistoria
 
   cmp al, 27
