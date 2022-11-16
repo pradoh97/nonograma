@@ -158,7 +158,7 @@ public over
 	;---------------------------------------------------
 		mov ah, 2h
 		mov dl, 15
-		add dh, 20
+		mov dh, 20
  		int 10h
 
 		mov ah,9

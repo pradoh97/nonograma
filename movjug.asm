@@ -27,6 +27,7 @@
 ; - Izquierdo
 ; - Superior
 ;Recibe vector jugada
+extrn win:proc
 extrn actualizarErrores:proc
 extrn over:proc
 extrn pintar:proc
@@ -259,6 +260,8 @@ movimientoJugador proc
     jmp restaurarRegistros
 
   ganaste:
+    call win
+    jmp restaurarRegistros
 
       mov dh, 3		                    ;Y
       mov dl, 30		                  ;X
