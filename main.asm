@@ -71,6 +71,9 @@ cargarMetadatosNivel3:
   call nivel3
   jmp cargarHUD
 
+jintermedio:
+  jmp inicio
+
 cargarHUD:
   ;Rescato los registros que pisó el nivel con sus metadatos
   mov cantidadFilas, al
@@ -108,12 +111,12 @@ jmp inicio
 
 comoJugar:
   call instruccion
-  jmp inicio
+  jmp jintermedio
 
 mostrarHistoria:
   call limpiarPantalla
   call historia
-  jmp inicio
+  jmp jintermedio
 fin:
   call limpiarPantalla
 
