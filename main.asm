@@ -17,6 +17,7 @@ extrn movimientoJugador:proc
 extrn historia:proc
 extrn hud:proc
 extrn limpiarPantalla:proc
+extrn instruccion:proc
 
 main proc
   mov ax, @data
@@ -106,7 +107,7 @@ gameLoop:
 jmp inicio
 
 comoJugar:
-  call instrucciones
+  call instruccion
   jmp inicio
 
 mostrarHistoria:
