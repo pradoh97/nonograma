@@ -11,7 +11,7 @@
 .code
 extrn cursor:proc
 extrn musica:proc
-public win:proc
+public win
 win proc
 
   push ax

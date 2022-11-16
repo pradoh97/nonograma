@@ -5,7 +5,7 @@
 
 .code
 
-public musica:proc
+public musica
 musica proc
 
   push bx
