@@ -46,7 +46,7 @@ opciones:
   je cargarMetadatosNivel3
 
   cmp al, "4"                 ;SI ES CUATRO VA A LA HISTORIA DEL JUEGO
-  je instrucciones
+  je instruccion
 
   cmp al, "5"                 ;SI ES CUATRO VA A LA HISTORIA DEL JUEGO
   je mostrarHistoria
