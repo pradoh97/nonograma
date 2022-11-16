@@ -45,13 +45,13 @@ opciones:
   cmp al, "3"                 ;SI ES 3 VA AL NIVEL 3
   je cargarMetadatosNivel3
 
-  cmp al, "4"                 ;SI ES CUATRO VA A LA HISTORIA DEL JUEGO
-  je instruccion
+  cmp al, "4"                 ;SI ES CUATRO VA A COMO JUGAR
+  je intermedio2
 
-  cmp al, "5"                 ;SI ES CUATRO VA A LA HISTORIA DEL JUEGO
-  je mostrarHistoria
+  cmp al, "5"                 ;SI ES CINCO VA A LA HISTORIA DEL JUEGO
+  je intermedio3
 
-  cmp al, 27
+  cmp al, 27                  ;SI ES ESC SALE DEL JUEGO
   je fin
 
   jmp opciones  ;SI ES CUALQUIER OTRA TECLA VUELVE A PEDIR UNA VALIDA
@@ -71,8 +71,14 @@ cargarMetadatosNivel3:
   call nivel3
   jmp cargarHUD
 
-jintermedio:
+intermedio1:
   jmp inicio
+
+intermedio2:
+  jmp comoJugar
+
+intermedio3:
+  jmp mostrarHistoria
 
 cargarHUD:
   ;Rescato los registros que pisó el nivel con sus metadatos
@@ -110,13 +116,14 @@ gameLoop:
 jmp inicio
 
 comoJugar:
+  call limpiarPantalla
   call instruccion
-  jmp jintermedio
+  jmp jintermedio1
 
 mostrarHistoria:
   call limpiarPantalla
   call historia
-  jmp jintermedio
+  jmp jintermedio1
 fin:
   call limpiarPantalla
 
