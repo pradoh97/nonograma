@@ -4,7 +4,7 @@
 .data
 	posCartelX db 15             ;MODIFICAR
 	posCartelY db 4             ;MODIFICAR
-	texto db 'Pulse Enter para volver al menu.', 0dh,0ah,24h  ;MODIFICAR
+	texto db 'Pulse Enter para volver al menu.',24h  ;MODIFICAR
 	borde db 50 dup (176),0dh,0ah,24h
 	game1 db 176,176,176,176,219,219,176,176,219,219,176,176,176,176,176,176,219,219,219,219,219,219,176,176,176,176,219,219,176,176,'XX',176,176,219,219,176,176,219,219,219,219,219,219,219,219,219,219,176,176,0dh,0ah,24h
 	game2 db 176,176,219,219,176,176,176,176,176,176,176,176,176,176,219,219,176,176,176,176,176,176,219,219,176,176,219,219,219,219,176,176,219,219,219,219,176,176,176,176,'XX',176,176,176,176,176,176,176,176,0dh,0ah,24h
@@ -21,6 +21,7 @@
 	extrn cursor:proc
 	extrn limpiarPantalla:proc
 	extrn musicad:proc
+	extrn imprimir:proc
 public over
 	over proc
 		call limpiarPantalla
@@ -32,9 +33,8 @@ public over
  		int 10h
 		push dx
 
-		mov ah,9
 		mov dx, offset borde
-		int 21h
+		call imprimir
 		pop dx
 		inc dh
 	;---------------------------------------------------
@@ -42,9 +42,8 @@ public over
  		int 10h
 		push dx
 
-		mov ah,9
-		mov dx, offset game1
-		int 21h
+		lea dx, game1
+		call imprimir
 		pop dx
 		inc dh
 
@@ -52,9 +51,8 @@ public over
  		int 10h
 		push dx
 
-		mov ah,9
-		mov dx, offset game2
-		int 21h
+		lea dx, game2
+		call imprimir
 		pop dx
 		inc dh
 
@@ -62,9 +60,8 @@ public over
  		int 10h
 		push dx
 
-		mov ah,9
-		mov dx, offset game3
-		int 21h
+		lea dx, game3
+		call imprimir
 		pop dx
 		inc dh
 
@@ -72,9 +69,8 @@ public over
  		int 10h
 		push dx
 
-		mov ah,9
-		mov dx, offset game4
-		int 21h
+		lea dx, game4
+		call imprimir
 		pop dx
 		inc dh
 
@@ -82,9 +78,8 @@ public over
  		int 10h
 		push dx
 
-		mov ah,9
-		mov dx, offset game5
-		int 21h
+		lea dx, game5
+		call imprimir
 		pop dx
 		inc dh
 	;---------------------------------------------------
@@ -92,9 +87,8 @@ public over
  		int 10h
 		push dx
 
-		mov ah,9
-		mov dx, offset borde
-		int 21h
+		lea dx, borde
+		call imprimir
 		pop dx
 		inc dh
 	;---------------------------------------------------
@@ -102,9 +96,8 @@ public over
  		int 10h
 		push dx
 
-		mov ah,9
-		mov dx, offset over1
-		int 21h
+		lea dx, over1
+		call imprimir
 		pop dx
 		inc dh
 
@@ -112,9 +105,8 @@ public over
  		int 10h
 		push dx
 
-		mov ah,9
-		mov dx, offset over2
-		int 21h
+		lea dx, over2
+		call imprimir
 		pop dx
 		inc dh
 
@@ -122,9 +114,8 @@ public over
  		int 10h
 		push dx
 
-		mov ah,9
-		mov dx, offset over3
-		int 21h
+		lea dx, over3
+		call imprimir
 		pop dx
 		inc dh
 
@@ -132,9 +123,8 @@ public over
  		int 10h
 		push dx
 
-		mov ah,9
-		mov dx, offset over4
-		int 21h
+		lea dx, over4
+		call imprimir
 		pop dx
 		inc dh
 
@@ -142,9 +132,8 @@ public over
  		int 10h
 		push dx
 
-		mov ah,9
-		mov dx, offset over5
-		int 21h
+		lea dx, over5
+		call imprimir
 		pop dx
 		inc dh
 	;---------------------------------------------------
@@ -152,20 +141,18 @@ public over
  		int 10h
 		push dx
 
-		mov ah,9
-		mov dx, offset borde
-		int 21h
+		lea dx, borde
+		call imprimir
 		pop dx
 		inc dh
 	;---------------------------------------------------
 
 		mov dl, 15
-		mov dh, 20
+		mov dh, 25
  		call cursor
 
-		mov ah,9
-		mov dx, offset texto
-		int 21h
+		lea dx, texto
+		call imprimir
 	;---------------------------------------------------
 		call musicad
 

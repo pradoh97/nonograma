@@ -6,19 +6,19 @@
   cursorX           db 0
   cursorY           db 0
 
-  t1  db 219,20h,20h,20h,20h,219,20h,20h,219,219,219,219,20h,20h,219,20h,20h,20h,20h,219,20h,20h,219,219,219,219,20h,20h,219,219,219,219,219,219,20h,20h,219,219,219,219,219,219,20h,20h,219,219,219,219,219,20h,20h,219,20h,20h,20h,20h,219, 24h
-  t2  db 219,219,20h,20h,20h,219,20h,20h,219,20h,20h,219,20h,20h,219,219,20h,20h,20h,219,20h,20h,219,20h,20h,219,20h,20h,219,20h,20h,20h,20h,20h,20h,20h,219,20h,20h,20h,20h,219,20h,20h,219,20h,20h,20h,219,20h,20h,219,219,20h,20h,219,219, 24h
-  t3  db 219,20h,219,20h,20h,219,20h,20h,219,20h,20h,219,20h,20h,219,20h,219,20h,20h,219,20h,20h,219,20h,20h,219,20h,20h,219,20h,20h,219,219,219,20h,20h,219,219,219,219,219,20h,20h,20h,219,219,219,219,219,20h,20h,219,20h,219,219,20h,219, 24h
-  t4  db 219,20h,20h,219,20h,219,20h,20h,219,20h,20h,219,20h,20h,219,20h,20h,219,20h,219,20h,20h,219,20h,20h,219,20h,20h,219,20h,20h,20h,20h,219,20h,20h,219,20h,20h,20h,219,20h,20h,20h,219,20h,20h,20h,219,20h,20h,219,20h,20h,20h,20h,219, 24h
-  t5  db 219,20h,20h,20h,219,219,20h,20h,219,219,219,219,20h,20h,219,20h,20h,20h,219,219,20h,20h,219,219,219,219,20h,20h,219,219,219,219,219,219,20h,20h,219,20h,20h,20h,20h,219,20h,20h,219,20h,20h,20h,219,20h,20h,219,20h,20h,20h,20h,219, 24h
-  t66 db "SISTEMAS DE PROCESAMIENTO DE DATOS 2022", 24h
+  t1      db 219,20h,20h,20h,20h,219,20h,20h,219,219,219,219,20h,20h,219,20h,20h,20h,20h,219,20h,20h,219,219,219,219,20h,20h,219,219,219,219,219,219,20h,20h,219,219,219,219,219,219,20h,20h,219,219,219,219,219,20h,20h,219,20h,20h,20h,20h,219, 24h
+  t2      db 219,219,20h,20h,20h,219,20h,20h,219,20h,20h,219,20h,20h,219,219,20h,20h,20h,219,20h,20h,219,20h,20h,219,20h,20h,219,20h,20h,20h,20h,20h,20h,20h,219,20h,20h,20h,20h,219,20h,20h,219,20h,20h,20h,219,20h,20h,219,219,20h,20h,219,219, 24h
+  t3      db 219,20h,219,20h,20h,219,20h,20h,219,20h,20h,219,20h,20h,219,20h,219,20h,20h,219,20h,20h,219,20h,20h,219,20h,20h,219,20h,20h,219,219,219,20h,20h,219,219,219,219,219,20h,20h,20h,219,219,219,219,219,20h,20h,219,20h,219,219,20h,219, 24h
+  t4      db 219,20h,20h,219,20h,219,20h,20h,219,20h,20h,219,20h,20h,219,20h,20h,219,20h,219,20h,20h,219,20h,20h,219,20h,20h,219,20h,20h,20h,20h,219,20h,20h,219,20h,20h,20h,219,20h,20h,20h,219,20h,20h,20h,219,20h,20h,219,20h,20h,20h,20h,219, 24h
+  t5      db 219,20h,20h,20h,219,219,20h,20h,219,219,219,219,20h,20h,219,20h,20h,20h,219,219,20h,20h,219,219,219,219,20h,20h,219,219,219,219,219,219,20h,20h,219,20h,20h,20h,20h,219,20h,20h,219,20h,20h,20h,219,20h,20h,219,20h,20h,20h,20h,219, 24h
+  t66     db "SISTEMAS DE PROCESAMIENTO DE DATOS 2022", 24h
 
-  t76 db "Si desea juegar en modo FACIL, presione 1.", 0dh,0ah
-      db " Si desea juegar en modo INTERMEDIO, presione 2.", 0dh,0ah
-      db " Si desea juegar en modo DIFICIL, presione 3.", 0dh,0ah
-      db " Si desea saber COMO JUGAR, presione 4.", 0dh, 0ah
-      db " Si desea saber sobre la HISTORIA del juego, presione 5.", 0dh, 0ah
-      db " Si desea SALIR del juego, presione ESC.", 24h
+  t76     db "Si desea juegar en modo FACIL, presione 1.", 0dh,0ah
+          db " Si desea juegar en modo INTERMEDIO, presione 2.", 0dh,0ah
+          db " Si desea juegar en modo DIFICIL, presione 3.", 0dh,0ah
+          db " Si desea saber COMO JUGAR, presione 4.", 0dh, 0ah
+          db " Si desea saber sobre la HISTORIA del juego, presione 5.", 0dh, 0ah
+          db " Si desea SALIR del juego, presione ESC.", 24h
 
   nombres db "  Hernan Prado - Gabriel Tarquini - Guillermo Carbone - Agustina Venanzoni", 24h
 
