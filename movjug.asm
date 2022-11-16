@@ -17,7 +17,7 @@
   cartelWin1                  db 201, 18 dup (205), 187,0dh,0ah,24h
   cartelWin2                  db 186,'Bien hecho Pedro',33,33,186,0dh,0ah,24h
   cartelWin3                  db 200, 18 dup (205), 188,0dh,0ah,24h
-  pulseEnter                  db 'Pulse enter para continuar.',0dh,0ah,24h
+  pulseEnter                  db 'Pulse enter para voler al menu.',0dh,0ah,24h
 
 
 .code

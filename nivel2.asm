@@ -9,8 +9,8 @@
   cantidadPistasFila    db 3
   cantidadPistasColumna db 2
   nroNivel              db 2
-  origenGrillaX         db 36
-  origenGrillaY         db 11
+  origenGrillaX         db 32
+  origenGrillaY         db 10
   cantidadFilas         db 7
   cantidadColumnas      db 7
 
