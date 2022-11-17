@@ -3,7 +3,10 @@
 .stack 100h
 .data
 
+;Título
 i1      db  "COMO JUGAR NONOGRAM", 24h
+
+;Instrucciones
 i2      db  "-La idea del juego es revelar una imagen oculta.", 0dh, 0ah
         db  " " ,0dh, 0ah
         db  " -Para moverte tenes que apretar las teclas WASD.", 0dh, 0ah
@@ -17,6 +20,8 @@ i2      db  "-La idea del juego es revelar una imagen oculta.", 0dh, 0ah
         db  " " ,0dh, 0ah
         db  " -El orden tambien es importante. El orden de los cuadros coloreados es el", 0dh, 0ah
         db  " mismo orden en el que aparecen los numeros.", 0dh, 0ah, 24h
+
+;Retorno
 i3			db	"Presione una tecla para regresar al menu principal.", 24h
 
 .code
@@ -27,34 +32,34 @@ instruccion proc
 
   push ax
   push dx
+  
+  imprimirInstrucciones:
+    mov dh, 1
+    mov dl, 30
+    call cursor
 
-      mov dh, 1
-      mov dl, 30
-      call cursor
+    lea dx, i1
+    call imprimir
 
-      lea dx, i1
-      call imprimir
+    mov dh, 3
+    mov dl, 1
+    call cursor
 
-      mov dh, 3
-      mov dl, 1
-      call cursor
+    lea dx, i2
+    call imprimir
 
-      lea dx, i2
-      call imprimir
+    mov dh, 24
+    mov dl, 15
+    call cursor
 
-      mov dh, 24
-      mov dl, 15
-      call cursor
+    lea dx, i3
+    call imprimir
 
-      lea dx, i3
-      call imprimir
+    mov ah, 0
+    int 16h
 
-      mov ah, 0
-      int 16h
-
-    pop dx
-    pop ax
-
+  pop dx
+  pop ax
 ret
 instruccion endp
 end

@@ -19,49 +19,52 @@ extrn hud:proc
 extrn vec:proc
 public nivel1
 nivel1 proc
-  ;Número nivel
-  mov al, nroNivel
-  push ax
+  cargarDatosHUD:
+    ;Número nivel
+    mov al, nroNivel
+    push ax
 
-  ;Pistas
-  lea dx, pistaColumna
-  push dx
-  lea dx, pistaFila
-  push dx
+    ;Pistas
+    lea dx, pistaColumna
+    push dx
+    lea dx, pistaFila
+    push dx
 
-  ;cantidad de pistas fila y columna
-  mov al, cantidadPistasFila
-  push ax
-  mov al, cantidadPistasColumna
-  push ax
+    ;cantidad de pistas fila y columna
+    mov al, cantidadPistasFila
+    push ax
+    mov al, cantidadPistasColumna
+    push ax
 
-  ;Coordenadas de origen en X y después Y
-  mov al, origenGrillaX
-  push ax
-  mov al, origenGrillaY
-  push ax
+    ;Coordenadas de origen en X y después Y
+    mov al, origenGrillaX
+    push ax
+    mov al, origenGrillaY
+    push ax
 
-  ;Cantidad de filas y columnas
-  mov al, cantidadFilas
-  push ax
-  mov al, cantidadColumnas
-  push ax
+    ;Cantidad de filas y columnas
+    mov al, cantidadFilas
+    push ax
+    mov al, cantidadColumnas
+    push ax
 
-  call hud
+    call hud
 
-  lea dx, vectorSolucion
-  push dx
-  lea dx, vectorJugada
-  push dx
-  call vec
+  reiniciarNivel:
+    lea dx, vectorSolucion
+    push dx
+    lea dx, vectorJugada
+    push dx
+    call vec
 
-  lea dx, vectorJugada
-  mov al, cantidadFilas
-  mov ah, cantidadColumnas
+  ;Pasa los metadatos del nivel (las variables de este archivo) al gameloop
+  cargarDatosGameLoop:
+    lea dx, vectorJugada
+    mov al, cantidadFilas
+    mov ah, cantidadColumnas
 
-  mov bl, origenGrillaX
-  mov bh, origenGrillaY
-
+    mov bl, origenGrillaX
+    mov bh, origenGrillaY
   ret
 nivel1 endp
 end

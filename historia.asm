@@ -3,7 +3,10 @@
 .stack 100h
 .data
 
+;Título
 titulo 	db	"HISTORIA DEL NONOGRAM", 24h
+
+;Cuerpo
 re1			db 	"En 1987, Non Ishida, un editor de graficos japones, gano una competencia en", 0dh, 0ah
 				db	"Tokio por la creacion de imagenes en cuadricula usando luces de rascacielos", 0dh, 0ah
 				db	"que eran encendidas y apagadas. Casualmente, un desarrollador de rompecabezas", 0dh, 0ah
@@ -16,6 +19,8 @@ re1			db 	"En 1987, Non Ishida, un editor de graficos japones, gano una competen
 			  db	"publicarlos semanalmente. En 1993, el primer libro de nonogramas fue publicado", 0dh, 0ah
 			  db	"por Non Ishida. The Sunday Telegraph dedico un libro a los puzles", 0dh, 0ah
 			  db	"titulado	el 'Libro de Nonogramas'.", 24h
+
+;Retorno
 re2			db	"Presione una tecla para regresar al menu principal.", 24h
 
 .code
@@ -24,29 +29,30 @@ extrn imprimir:proc
 extrn cursor:proc
 
 	historia proc
-  		mov dh, 1 		    	;COORDENADA DE FILA
-  		mov dl, 27	      	;COORDENADA DE COLUMNA
+		imprimirHistoria:
+  		mov dh, 1
+  		mov dl, 27
   		call cursor
 
     	lea dx, titulo
     	call imprimir
 
-  		mov dh, 3 		    	;COORDENADA DE FILA
-  		mov dl, 0		      	;COORDENADA DE COLUMNA
+  		mov dh, 3
+  		mov dl, 0
   		call cursor
 
       lea dx, re1
       call imprimir
 
-  		mov dh, 3 		    	;COORDENADA DE FILA
-  		mov dl, 0		      	;COORDENADA DE COLUMNA
+  		mov dh, 3
+  		mov dl, 0
   		call cursor
 
       lea dx, re1
       call imprimir
 
-			mov dh, 24 		    	;COORDENADA DE FILA
-	  	mov dl, 15		      ;COORDENADA DE COLUMNA
+			mov dh, 24
+	  	mov dl, 15
 	  	call cursor
 
 	    lea dx, re2
@@ -56,6 +62,5 @@ extrn cursor:proc
       int 16h
 
 			ret
-
 		historia endp
 end

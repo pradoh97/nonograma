@@ -17,6 +17,8 @@ imprimir proc
 	ret
 imprimir endp
 
+;------------------------------------------------------------------
+
 ;Recibe lo que se va a imprimr por el registro DL
 imprimirCaracter proc
 	mov ah, 2
@@ -24,18 +26,26 @@ imprimirCaracter proc
 	ret
 imprimirCaracter endp
 
-;Recibe en dh la coordenada y, en dl la coordenada x a donde posicionar el cursor.
+;------------------------------------------------------------------
+
+;Recibe en dh la coordenada y, en dl la coordenada x a donde posicionar el cursor
+;con la ayuda de la interrupcion 10
 cursor proc
 	push bx
+	push ax
 
   mov ah, 2		       ;POSICIONAMOS EL CURSOR
   mov bh, 0 		     ;PAGINA SIEMPRE LA MISMA
   int 10h
 
+	pop ax
 	pop bx
   ret
 cursor endp
 
+;------------------------------------------------------------------
+
+;Borra todo lo que está en la pantalla.
 limpiarPantalla proc
 	push ax
 
@@ -47,7 +57,11 @@ limpiarPantalla proc
 	ret
 limpiarPantalla endp
 
-;Esta función cambia un caracter en la posición actual para agregar color si así se desea
+;------------------------------------------------------------------
+
+;Esta función cambia un caracter en la posición actual con un color dado:
+; bl recibe el código del color.
+; al recibe el caracter.
 pintar proc
 	mov ah, 09h
 	mov bh, 0h

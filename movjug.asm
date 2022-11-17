@@ -12,21 +12,17 @@
   cantidadErrores             db 30h
   cantidadFilas               db 0
   nrodefilas                  db 0
-  cantidadAciertos            db 0                                              ;Los aciertos totales de un nivel.
-  cantidadAciertosJugador     db 0                                              ;Los aciertos que hizo el jugador.
-  cartelWin1                  db 201, 18 dup (205), 187,0dh,0ah,24h
-  cartelWin2                  db 186,'Bien hecho Pedro',33,33,186,0dh,0ah,24h
-  cartelWin3                  db 200, 18 dup (205), 188,0dh,0ah,24h
-  pulseEnter                  db 'Pulse Enter para volver al menu.',0dh,0ah,24h
-
+  cantidadAciertos            db 0
+  cantidadAciertosJugador     db 0
 
 .code
 ;Recibe por stack los límites de la matriz de movimiento en el siguiente orden:
+;Cantidad de filas
+;Recibe vector jugada
 ; - Inferior
 ; - Derecho
 ; - Izquierdo
 ; - Superior
-;Recibe vector jugada
 extrn win:proc
 extrn actualizarErrores:proc
 extrn over:proc
@@ -36,6 +32,7 @@ extrn imprimirCaracter:proc
 public movimientoJugador
 movimientoJugador proc
   mov cantidadErrores, 30h
+  ;Profilaxis.
   salvarRegistros:
     push bp
     mov bp, sp
@@ -44,20 +41,26 @@ movimientoJugador proc
     push dx
     push di
   cargarDesdeStack:
-    ;Rescato los límites para el jugador.
+    ;Límite superior
     mov dl, ss:[bp+4]
     mov posicionJugadorY, dl
     mov origenGrillaY, dl
+    ;Límite izquierdo
     mov dl, ss:[bp+6]
     mov posicionJugadorX, dl
     mov origenGrillaX, dl
+    ;Límite derecho
     mov dl, ss:[bp+8]
     mov limiteDerecho, dl
+    ;Límite izquierdo
     mov dl, ss:[bp+10]
     mov limiteInferior, dl
 
+    ;Rescata el vector jugada del nivel seleccionado
     mov bx, ss:[bp+12]
     mov offsetVectorJugada, bx
+
+    ;Rescata la cantidad de filas del nivel seleccionado
     mov dl, ss:[bp+14]
     mov cantidadFilas, dl
 
@@ -65,6 +68,7 @@ movimientoJugador proc
   mov di, offsetVectorJugada
   mov cantidadAciertos, 0
   mov cantidadAciertosJugador, 0
+
   contarAciertosEnNivel:
     cmp byte ptr[di], 24h
     je tecla
@@ -74,18 +78,17 @@ movimientoJugador proc
     inc di
     jmp contarAciertosEnNivel
 
-    sumaAciertoEnNivel:
-      inc di
-      inc cantidadAciertos
-  jmp contarAciertosEnNivel
+  sumaAciertoEnNivel:
+    inc di
+    inc cantidadAciertos
+    jmp contarAciertosEnNivel
 
   ;Movimiento o seleccion de casillero.
   tecla:
-    ;Espera el input del jugador.
+    ;Espera el input del jugador. Si no ingresa una tecla correcta vuelve a pedir otra
     mov ah, 0
     int 16h
 
-    ;73h = s, 77 = w, 61 = a, 64 = d (TODAS EN MINUSCULAS), 20h = espacio, 27d = esc
     cmp al, 73h
     je abajo
 
@@ -104,9 +107,9 @@ movimientoJugador proc
     cmp al, 27
     je salirNivel
 
-    jmp tecla ;Si no ingresa una tecla correcta vuelve a pedir otra
+    jmp tecla
 
-  ;Ver si alcanzó el límite inferior.
+  ;Todas las direcciones validan que no se haya alcanzado un límite.
   abajo:
     mov al, posicionJugadorY
     cmp al, limiteInferior
@@ -116,8 +119,6 @@ movimientoJugador proc
     mov dl, posicionJugadorX
     call cursor
     jmp tecla
-
-  ;Ver si alcanzó el límite superior.
   arriba:
     mov al, posicionJugadorY
     cmp al, origenGrillaY
@@ -127,8 +128,6 @@ movimientoJugador proc
     mov dl, posicionJugadorX
     call cursor
     jmp tecla
-
-  ;Ver si alcanzó el límite derecho.
   derecha:
     mov al, posicionJugadorX
     cmp al, limiteDerecho
@@ -138,8 +137,6 @@ movimientoJugador proc
     mov dl, posicionJugadorX
     call cursor
     jmp tecla
-
-  ;Ver si alcanzó el límite izquierdo.
   izquierda:
     mov al, posicionJugadorX
     cmp al, origenGrillaX
@@ -150,13 +147,14 @@ movimientoJugador proc
     call cursor
     jmp tecla
 
-  ;cambiar por respuesta erroneo.
+  ;Valida la respuesta dada.
   intermedio:
-    jmp comparoVec
+    jmp comparoRespuesta
 
   salirNivel:
     jmp restaurarRegistros
 
+  ;Si se alcanza algún límite de la grilla, devuelve al jugador al límite opuesto.
   volverArriba:
     mov dh, origenGrillaY
     mov posicionJugadorY, dh
@@ -183,32 +181,30 @@ movimientoJugador proc
   teclaIntermedio:
     jmp tecla
 
-  comparoVec:
-    ;Para asegurarnos
+  ;Compara la respuesta con la solución. Utilizamos el teorema fundamental de Guille.
+  comparoRespuesta:
+    ;Posición vertical en 2D pasado a 1D
     xor dx, dx
-    ;Para asegurarnos
     xor ax, ax
-    ;bx= nrofilas*(posicionJugadorY-origenGrillaY)+(posicionJugadorX-origenGrillaX)/2
     mov dh, posicionJugadorY
     sub dh, origenGrillaY
 
-    ;Nro filas
+    ;Posición horizontal en 2D pasado 1D
     mov ah, 0
     mov al, cantidadFilas
-
-    ;Multiplica al por dh
     mul dh
     mov bx, ax
 
-    ;dec dl
+    ;Ya que la relación horizontal:vertical es 2:1, necesitamos dividir por dos a la posición en X en 1D
     mov dh, posicionJugadorX
     sub dh, origenGrillaX
     shr dh, 1
 
+    ;Obtenemos la posición final en el espacio de 1D
     add bl, dh
     mov bh, 0
-    mov ax, bx
 
+    ;Valido la respuesta
     mov si, offsetVectorJugada
     add si, bx
     cmp byte ptr[si], 31h
@@ -222,6 +218,7 @@ movimientoJugador proc
   acierto:
     inc cantidadAciertosJugador
 
+    ;Cambia el caracter de la matriz por el indicador valido
     mov byte ptr[si], 32h
     mov al, 219
     mov bl, 9h
@@ -230,7 +227,6 @@ movimientoJugador proc
 
     mov al, cantidadAciertos
     cmp cantidadAciertosJugador, al
-    ;je gameOver
     je ganaste
     jmp teclaIntermedio
 
@@ -245,6 +241,7 @@ movimientoJugador proc
     cmp cantidadErrores, 34h
     je gameOver
 
+    ;Actualiza los errores usando el valor pasado por stack que está en DL
     mov dl, cantidadErrores
     push dx
     call actualizarErrores

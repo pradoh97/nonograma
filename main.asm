@@ -28,12 +28,11 @@ main proc
   ;Y EL MODO 3
 
 inicio:
-  ;Vuelve a poner en cero la cantidad de errores.
   call limpiarPantalla
   call mostrarMenu
 
 opciones:
-  mov ah, 0                   ;LA INT 16 PIDE UNA TECLA PERO NO LA MUESTRA EN Pantalla
+  mov ah, 0                   ;LA INT 16 PIDE UNA TECLA PERO NO LA MUESTRA EN PANTALLA
   int 16h                     ;UNA VEZ QUE TENEMOS LA TECLA EN AL LA USAMOS PARA COMPARAR
 
   cmp al, "1"                 ;SI ES 1 VA AL NIVEL 1
@@ -54,60 +53,60 @@ opciones:
   cmp al, 27                  ;SI ES ESC SALE DEL JUEGO
   je fin
 
-  jmp opciones  ;SI ES CUALQUIER OTRA TECLA VUELVE A PEDIR UNA VALIDA
+  jmp opciones                ;SI ES CUALQUIER OTRA TECLA VUELVE A PEDIR UNA VALIDA
 
+;Se cargan las propiedades de cada nivel (alto y ancho de grilla, solucion, etc.)
 cargarMetadatosNivel1:
   call limpiarPantalla
   call nivel1
   jmp cargarHUD
-
 cargarMetadatosNivel2:
   call limpiarPantalla
   call nivel2
   jmp cargarHUD
-
 cargarMetadatosNivel3:
   call limpiarPantalla
   call nivel3
   jmp cargarHUD
 
+;Saltos intermedios, 1 va al inicio, 2 imprime la ayuda del juego y 3 imprime la historia del juego
 intermedio1:
   jmp inicio
-
 intermedio2:
   jmp comoJugar
-
 intermedio3:
   jmp mostrarHistoria
 
+;Se le pasa por stack los parámetros del nivel al gameloop para hacerles seguimiento (y validar fin del juego)
 cargarHUD:
-  ;Rescato los registros que pisó el nivel con sus metadatos
+  ;Guardo en variables los metadatos que llegan, por registros, desde el nivel seleccionado.
   mov cantidadFilas, al
   mov cantidadColumnas, ah
   mov origenGrillaX, bl
   mov origenGrillaY, bh
 
+  ;Muevo al stack los datos del nivel para pasarlo al gameloop
   mov ah, 0
-  push ax; en al esta la cantidad de filas.
-  push dx; esta el vector jugada
+  push ax            ; cantidad de filas.
+  push dx            ; vector jugada.
 
+  ;Calcula y pasa a stack el límite inferior
   mov al, cantidadFilas
   dec al
   add al, origenGrillaY
-  ;Límite inferior
   push ax
 
+  ;Calcula y pasa a stack el límite derecho
   mov al, cantidadColumnas
   add al, al
   sub al, 2
   add al, origenGrillaX
-  ;Límite derecho
   push ax
 
-  ;Límite izquierdo
+  ;Pasa a stack el límite izquierdo
   mov bh, 0
   push bx
-  ;Límite superior
+  ;Pasa a stack el Límite superior
   mov bl, origenGrillaY
   push bx
 

@@ -19,6 +19,7 @@ extrn hud:proc
 extrn vec:proc
 public nivel2
 nivel2 proc
+cargarDatosHUD:
   ;Número nivel
   mov al, nroNivel
   push ax
@@ -49,19 +50,21 @@ nivel2 proc
 
   call hud
 
+reiniciarNivel:
   lea dx, vectorSolucion
   push dx
   lea dx, vectorJugada
   push dx
   call vec
 
+;Pasa los metadatos del nivel (las variables de este archivo) al gameloop
+cargarDatosGameLoop:
   lea dx, vectorJugada
   mov al, cantidadFilas
   mov ah, cantidadColumnas
 
   mov bl, origenGrillaX
   mov bh, origenGrillaY
-
-  ret
+ret
 nivel2 endp
 end
